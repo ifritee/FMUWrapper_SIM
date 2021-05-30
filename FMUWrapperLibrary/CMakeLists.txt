@@ -14,10 +14,13 @@ set(SOURCE_FILES
   src/main.cpp
   src/libfmuwrapper.cpp
   src/FMUWork.cpp
+  src/common/Cconstants.cpp
   src/fmi/FMUAbstract.cpp
   src/fmi/fmi10/FMU10Object.cpp
-  src/fmi/fmi10/shared/parser/stack.c
-  src/fmi/fmi10/shared/parser/xml_parser.c
+  src/fmi/fmi10/FMU10CoSimObject.cpp
+  src/fmi/fmi10/FMU10MExchObject.cpp
+  src/fmi/fmi10/shared/parser/stack10.cpp
+  src/fmi/fmi10/shared/parser/xml_parser10.cpp
   src/fmi/fmi20/FMU20Object.cpp
   src/fmi/fmi20/parser/XmlElement.cpp
   src/fmi/fmi20/parser/XmlParser.cpp
@@ -28,12 +31,14 @@ set(HEADER_FILES
   src/libfmuwrapper.h
   src/libfmuwrapper_global.h
   src/FMUWork.h
+  src/common/Cconstants.h
   src/fmi/FMUAbstract.h
   src/fmi/fmi10/FMU10Object.h
-  src/fmi/fmi10/shared/parser/stack.h
-  src/fmi/fmi10/shared/parser/xml_parser.h
-  src/fmi/fmi10/shared/parser/expat_external.h
-  src/fmi/fmi10/shared/parser/expat.h
+  src/fmi/fmi10/FMU10ObjectAbstract.h
+  src/fmi/fmi10/FMU10CoSimObject.h
+  src/fmi/fmi10/FMU10MExchObject.h
+  src/fmi/fmi10/shared/parser/stack10.h
+  src/fmi/fmi10/shared/parser/xml_parser10.h
   src/fmi/fmi10/shared/fmi_cs.h
   src/fmi/fmi10/shared/fmi_me.h
   src/fmi/fmi10/shared/include/fmiFunctions.h
@@ -55,6 +60,7 @@ include_directories(
   src
   src/fmi
   src/fmi/fmi10
+  src/fmi/fmi10/shared
   src/fmi/fmi10/shared/include
   src/fmi/fmi10/shared/parser
   src/fmi/fmi20/
@@ -62,11 +68,13 @@ include_directories(
   src/fmi/fmi20/parser
   src/common
   third_party/libzip/lib
+  third_party/libexpat
   )
 
 add_definitions(
   -D__WITH_LIBRARY__
   -DFMUWRAPPER_LIBRARY
+  -DSTANDALONE_XML_PARSER
   )
 
 IF (CMAKE_BUILD_TYPE MATCHES Debug)
@@ -79,6 +87,8 @@ ENDIF ()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/third_party/libzip/build/lib/libzip.a)
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/third_party/libexpat/nix_64/libexpat.a)
+target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
 
 find_package(Threads REQUIRED)
 find_package(Boost 1.69 COMPONENTS program_options log log_setup REQUIRED)

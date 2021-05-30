@@ -1,7 +1,9 @@
 #include <fstream>
-#include <boost/property_tree/xml_parser.hpp>
 
 #include "FMUWork.h"
+#include "Cconstants.h"
+#include "FMU10Object.h"
+#include "FMU20Object.h"
 
 namespace fmuw
 {
@@ -14,13 +16,15 @@ namespace fmuw
 
   FMUWork::~FMUWork()
   {
-
+    delete m_fmuObject;
+    m_fmuObject = nullptr;
   }
 
   bool FMUWork::DescriptionRead_b()
   {
     std::ifstream stream;
-    stream.open(m_fmuPath + "/" + DESRIPTION_FILE);
+    std::string fileName = m_fmuPath + "/" + DESRIPTION_FILE;
+    stream.open(fileName);
     if (!stream.is_open()) {
       m_lastError = "File XML not fount: " + m_fmuPath + "/" + DESRIPTION_FILE;
       return false;
@@ -30,9 +34,21 @@ namespace fmuw
       boost::property_tree::read_xml(stream, propertyTree);
       m_fmuVersion = propertyTree.get<std::string>("fmiModelDescription.<xmlattr>.fmiVersion");
       m_modelName = propertyTree.get<std::string>("fmiModelDescription.<xmlattr>.modelName");
-
+      if (m_fmuObject) {
+        delete m_fmuObject;
+        m_fmuObject = nullptr;
+      }
+      if (m_fmuVersion == "1.0") {
+        m_fmuObject = new FMU10Object(m_fmuPath);
+      } else if (m_fmuVersion == "2.0") {
+        m_fmuObject = new FMU20Object(m_fmuPath);
+      } else {
+        m_lastError = "FMU version is not valid = " + m_fmuVersion;
+        return false;
+      }
+      m_fmuObject->parse(propertyTree);
     } catch(boost::property_tree::xml_parser_error &e) {
-      m_lastError = DESRIPTION_FILE + " parsing is crashed: " + e.what();
+      m_lastError = DESRIPTION_FILE + std::string(" parsing is crashed: ") + e.what();
       stream.close();
       return false;
     }

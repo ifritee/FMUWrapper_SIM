@@ -14,9 +14,13 @@ namespace fmuw
   {
   public:
     /** @brief Конструктор */
-    explicit FMU20Object();
+    explicit FMU20Object(const std::string & path);
     /** @brief Деструктор */
     virtual ~FMU20Object();
+    /**
+     * @brief Считывание данных из xml-файла
+     * @param tree дерево элеентов из xml-файла */
+    virtual void parse(boost::property_tree::ptree & tree) override;
   };
 
 } // namespace fmuw

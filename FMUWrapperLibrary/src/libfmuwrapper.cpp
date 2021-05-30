@@ -33,6 +33,8 @@ int unzipFMU(const char *file, const char *dst)
   std::string outDirectory = std::string(dst) + "/" + baseName;
   if (boost::filesystem::create_directory(outDirectory) == false) {
     last_error = "Do not create out directory";
+    zip_close(zipStream);
+    return CODE_FAILED;
   }
   for (int i = 0; i < zip_get_num_entries(zipStream, 0); ++i) {
     if(zip_stat_index(zipStream, i, 0, &zipStat) == 0) {

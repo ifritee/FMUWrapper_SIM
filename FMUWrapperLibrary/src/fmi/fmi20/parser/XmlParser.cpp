@@ -201,7 +201,7 @@ bool XmlParser::readNextInXml() {
 //    if (ret != 1) {
 //        return false;
 //    }
-//    return true;
+    return true;
 }
 
 /* -------------------------------------------------------------------------* 

@@ -10,6 +10,9 @@
  * @date 17.05.2021 */
 namespace fmuw
 {
+
+  class FMUAbstract;
+
   /**
    * @class FMUWork
    * @brief Класс работы с моделью FMU
@@ -20,7 +23,6 @@ namespace fmuw
    * подгрузить уже нужный модуль. */
   class FMUWork
   {
-    const std::string DESRIPTION_FILE = "modelDescription.xml";
   public:
     /**
      * @brief FMUWork Конструктор с параметрами
@@ -42,6 +44,7 @@ namespace fmuw
     std::string m_lastError;  ///< @brief Последняя ошибка
     std::string m_modelName;  ///< @brief Имя модели
     std::string m_fmuVersion; ///< @brief Версия используемого FMI
+    FMUAbstract * m_fmuObject = nullptr;  ///< @brief Указатель на текущий объект FMU
   };
 
 } // namespace fmuw
