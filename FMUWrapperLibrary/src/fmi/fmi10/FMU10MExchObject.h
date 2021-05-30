@@ -6,16 +6,16 @@
 namespace fmuw
 {
 
+  class CModelData;
+
   namespace fmi10 {
     struct FMU;
     struct ModelDescription;
   }
 
-  namespace name {
-
-  }
   class FMU10MExchObject : public FMU10ObjectAbstract
   {
+
   public:
     /** @brief Конструктор */
     explicit FMU10MExchObject(const std::string & path);
@@ -25,9 +25,12 @@ namespace fmuw
     virtual void parse(std::string & fileName) override;
     /** @brief Загрузка методов библиотеки */
     virtual void loadLibrary() override;
+    /** @brief initialize Инициализация модели */
+    virtual void initialize(double endTime) override;
 
   private:
     fmi10::FMU * _ModelUnit_po;  ///< @brief Указатель на модель
+    CModelData * _ModelData_po = nullptr; ///< @brief Данные текущей модели
 
     /**
      * @brief Вывод данных о загружаемой модели

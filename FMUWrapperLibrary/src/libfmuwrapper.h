@@ -37,6 +37,14 @@ extern "C" {
    * @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
   FMUWRAPPER_EXPORT int parsing(int number);
 
+  //----- Работа с моделью --------------------------------------------
+  /**
+   * @brief initialize Инициализация модели FMU
+   * @param number номер модели
+   * @param entTime Время окончания моделирования
+   * @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
+  FMUWRAPPER_EXPORT int initialize(int number, double entTime);
+
 }
 
 #endif // LIBFMUWRAPPER_H

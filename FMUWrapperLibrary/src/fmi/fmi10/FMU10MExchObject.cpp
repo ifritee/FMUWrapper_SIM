@@ -14,6 +14,83 @@
 
 namespace fmuw
 {
+  void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status,
+                 fmiString category, fmiString message, ...) {}
+
+  /**
+   * @class CModelData
+   * @brief Данные модели */
+  class CModelData {
+  public:
+    /** @brief Конструктор */
+    explicit CModelData(const char * guid, fmi10::FMU * fmu)
+      : _ModelID_str(guid)
+      , _Model_po(fmu)
+    {}
+
+    virtual ~CModelData() {
+
+    }
+
+    void freeData() {
+      if(!_EventInfo_o.terminateSimulation) {
+        _Model_po->terminate(_Component_o);
+      }
+      _Model_po->freeModelInstance(_Component_o);
+    }
+
+    void createComponent() {
+      _Callbacks_o.logger = fmuLogger;
+      _Callbacks_o.allocateMemory = calloc;
+      _Callbacks_o.freeMemory = free;
+      _Component_o = _Model_po->instantiateModel(fmi10::getModelIdentifier(_Model_po->modelDescription)
+                                                 , _ModelID_str.c_str(), _Callbacks_o, fmiFalse);
+      if (!_Component_o) {
+        throw std::logic_error("could not instantiate model");
+      }
+    }
+
+    void initialize(fmiReal tStart, fmiReal tEnd)
+    {
+      _StartTime_d = tStart;
+      _EndTime_d = tEnd;
+      fmiStatus fmiFlag = _Model_po->setTime(_Component_o, _StartTime_d);
+      if (fmiFlag > fmiWarning) {
+        throw std::logic_error("Could not set time");
+      }
+      fmiFlag = _Model_po->initialize(_Component_o, fmiFalse, tStart, &_EventInfo_o);
+      if (fmiFlag > fmiWarning) {
+        throw std::logic_error("Could not initialize model");
+      }
+      if (_EventInfo_o.terminateSimulation) {
+        // model requested termination at init;
+        _EndTime_d = tStart;
+      }
+      _VarStates_i = getNumberOfStates(_Model_po->modelDescription);
+      _VarEvents_i = getNumberOfEventIndicators(_Model_po->modelDescription);
+
+//      // output solution for time t0
+//      outputRow(fmu, c, 0.0, file, '|', fmiTrue);  // output column names
+//      outputRow(fmu, c, 0.0, file, '|', fmiFalse); // output values
+
+    }
+    /** @brief Возвращает Количество состояний переменных */
+    int varStates() const { return _VarStates_i; }
+    /** @brief Возвращает Количество состояний событий переменных */
+    int varEvents() const { return _VarEvents_i; }
+
+  private:
+    fmi10::FMU * _Model_po;
+    std::string _ModelID_str; ///< @brief global unique id of the fmu
+    fmiComponent _Component_o; ///< @brief Компонент FMU
+    fmiReal _StartTime_d = 0.0; ///< @brief Время запуска
+    fmiReal _EndTime_d = 0.0; ///< @brief Время останова
+    fmiEventInfo _EventInfo_o; ///< @brief Обновление при вызове, инициализации и обновлении прерывания
+    fmiCallbackFunctions _Callbacks_o;
+    int _VarStates_i = 0; ///< @brief Количество состояний переменных
+    int _VarEvents_i = 0; ///< @brief Количество состояний событий переменных
+  };
+//------------------------------------------------------------
 
   FMU10MExchObject::FMU10MExchObject(const std::string &path)
     : FMU10ObjectAbstract(path)
@@ -24,11 +101,13 @@ namespace fmuw
 
   FMU10MExchObject::~FMU10MExchObject()
   {
+    _ModelData_po->freeData();
 #if WINDOWS
     FreeLibrary(_ModelUnit_po->dllHandle);
 #else /* WINDOWS */
     dlclose(_ModelUnit_po->dllHandle);
 #endif /* WINDOWS */
+    delete _ModelData_po;
     delete _ModelUnit_po;
   }
 
@@ -83,6 +162,16 @@ namespace fmuw
     _ModelUnit_po->getInteger              = (fmi10::fGetInteger)         getFunctionAddress("fmiGetInteger");
     _ModelUnit_po->getBoolean              = (fmi10::fGetBoolean)         getFunctionAddress("fmiGetBoolean");
     _ModelUnit_po->getString               = (fmi10::fGetString)          getFunctionAddress("fmiGetString");
+  }
+
+  void FMU10MExchObject::initialize(double endTime)
+  {
+    if (_ModelData_po != nullptr) {
+      delete _ModelData_po;
+    }
+    _ModelData_po = new CModelData(getString(_ModelUnit_po->modelDescription, fmi10::att_guid), _ModelUnit_po);
+    _ModelData_po->createComponent(/*calloc, free*/);
+    _ModelData_po->initialize(0.0, endTime);
   }
 
   void FMU10MExchObject::printModelDescription(fmi10::ModelDescription* md)

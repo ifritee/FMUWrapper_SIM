@@ -7,9 +7,6 @@
 
 #pragma once
 
-namespace fmuw::fmi10
-{
-
 #ifdef _MSC_VER
 #include <windows.h>
 #define WINDOWS 1
@@ -30,6 +27,8 @@ namespace fmuw::fmi10
 #include "fmiModelFunctions.h"
 #include "xml_parser10.h"
 
+namespace fmuw::fmi10
+{
   typedef const char* (*fGetModelTypesPlatform)();
   typedef const char* (*fGetVersion)();
   typedef fmiComponent (*fInstantiateModel)(fmiString instanceName, fmiString GUID,

@@ -109,3 +109,17 @@ int parsing(int number)
   }
   return CODE_OK;
 }
+
+int initialize(int number, double entTime)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      work->modelInit(entTime);
+    } catch(...) {
+      last_error = work->lastError();
+      return CODE_FAILED;
+    }
+  }
+  return CODE_OK;
+}

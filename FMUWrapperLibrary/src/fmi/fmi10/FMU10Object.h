@@ -24,6 +24,8 @@ namespace fmuw
      * @brief Считывание данных из xml-файла
      * @param tree дерево элеентов из xml-файла */
     virtual void parse(boost::property_tree::ptree & tree) override;
+    /** @brief initialize Инициализация модели */
+    virtual void initialize(double entTime) override;
 
   private:
     FMU10ObjectAbstract * _Model_po = nullptr; ///< @brief Модель FMU

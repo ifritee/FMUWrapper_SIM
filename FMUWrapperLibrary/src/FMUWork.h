@@ -38,6 +38,8 @@ namespace fmuw
     std::string fmuPath() const;
     /** @brief Возвращает последнюю ошибку */
     std::string lastError() const;
+    /** @brief Инициализация модели */
+    void modelInit(double entTime);
 
   private:
     const std::string m_fmuPath;  ///< @brief Путь к распакованной FMU модели

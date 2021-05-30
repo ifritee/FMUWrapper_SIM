@@ -19,4 +19,9 @@ namespace fmuw
 
   }
 
+  void FMU20Object::initialize(double entTime)
+  {
+
+  }
+
 } // namespace fmuw

@@ -17,6 +17,8 @@ namespace fmuw
     virtual void parse(std::string & fileName) = 0;
     /** @brief Загрузка библиотеки модели */
     virtual void loadLibrary() = 0;
+    /** @brief initialize Инициализация модели */
+    virtual void initialize(double endTime) = 0;
 
   protected:
     std::string _FilenameDLL_str; ///< @brief Полное имя файла с библиотекой модели

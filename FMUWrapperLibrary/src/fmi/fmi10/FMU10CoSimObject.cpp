@@ -86,6 +86,11 @@ namespace fmuw
     _ModelUnit_po->getString               = (fmi10::fGetString)          getFunctionAddress("fmiGetString");
   }
 
+  void FMU10CoSimObject::initialize(double endTime)
+  {
+
+  }
+
   void FMU10CoSimObject::printModelDescription(fmi10::ModelDescription *md)
   {
     fmi10::Element* e = (fmi10::Element*)md;

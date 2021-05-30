@@ -22,6 +22,8 @@ namespace fmuw
     virtual void parse(std::string & fileName) override;
     /** @brief Загрузка методов библиотеки */
     virtual void loadLibrary() override;
+    /** @brief initialize Инициализация модели */
+    virtual void initialize(double endTime) override;
 
   private:
     fmi10::FMU * _ModelUnit_po;  ///< @brief Указатель на модель

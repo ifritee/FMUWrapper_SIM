@@ -21,6 +21,8 @@ namespace fmuw
      * @brief Считывание данных из xml-файла
      * @param tree дерево элеентов из xml-файла */
     virtual void parse(boost::property_tree::ptree & tree) = 0;
+    /** @brief initialize Инициализация модели */
+    virtual void initialize(double entTime) = 0;
 
   protected:
     std::string _FMUPath_str; ///< @brief Путь к папке с файлами FMU

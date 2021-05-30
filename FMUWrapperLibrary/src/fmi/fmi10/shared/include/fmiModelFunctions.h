@@ -148,20 +148,20 @@
    typedef void* (*fmiCallbackAllocateMemory)(size_t nobj, size_t size);
    typedef void  (*fmiCallbackFreeMemory)    (void* obj);
 
-   struct fmiCallbackFunctions {
+   typedef struct {
      fmiCallbackLogger         logger;
      fmiCallbackAllocateMemory allocateMemory;
      fmiCallbackFreeMemory     freeMemory;
-   };
+   } fmiCallbackFunctions;
 
-   struct fmiEventInfo {
+   typedef struct {
       fmiBoolean iterationConverged;
       fmiBoolean stateValueReferencesChanged;
       fmiBoolean stateValuesChanged;
       fmiBoolean terminateSimulation;
       fmiBoolean upcomingTimeEvent;
       fmiReal    nextEventTime;
-   };
+   } fmiEventInfo;
 
 /* reset alignment policy to the one set before reading this file */
 #pragma pack(pop)
