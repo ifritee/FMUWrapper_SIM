@@ -91,6 +91,26 @@ namespace fmuw
 
   }
 
+  void FMU10CoSimObject::step()
+  {
+
+  }
+
+  const std::map<std::string, int> & FMU10CoSimObject::inputVariables()
+  {
+    return std::map<std::string, int>();
+  }
+
+  const  std::map<std::string, int> & FMU10CoSimObject::outputVariables()
+  {
+    return std::map<std::string, int>();
+  }
+
+  double FMU10CoSimObject::doubleValue(const std::string &)
+  {
+    return 0.0;
+  }
+
   void FMU10CoSimObject::printModelDescription(fmi10::ModelDescription *md)
   {
     fmi10::Element* e = (fmi10::Element*)md;

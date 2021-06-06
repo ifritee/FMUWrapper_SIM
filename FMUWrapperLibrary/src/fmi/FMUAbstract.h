@@ -1,6 +1,8 @@
 #ifndef FMUABSTRACT_H
 #define FMUABSTRACT_H
 
+#include <map>
+#include <string>
 #include <boost/property_tree/xml_parser.hpp>
 
 namespace fmuw
@@ -23,6 +25,15 @@ namespace fmuw
     virtual void parse(boost::property_tree::ptree & tree) = 0;
     /** @brief initialize Инициализация модели */
     virtual void initialize(double entTime, double stepSize) = 0;
+    /** @brief Шаг расчета модели */
+    virtual void step() = 0;
+    /** @brief Возвращает все входные переменные с типом */
+    virtual const std::map<std::string, int> & inputVariables() = 0;
+    /** @brief Возвращает все выходные переменные с типом */
+    virtual const std::map<std::string, int> & outputVariables() = 0;
+
+    /** @brief Возвращает значение типа DOUBLE по имени */
+    virtual double doubleValue(const std::string &) = 0;
 
   protected:
     std::string _FMUPath_str; ///< @brief Путь к папке с файлами FMU

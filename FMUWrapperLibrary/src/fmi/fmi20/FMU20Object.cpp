@@ -24,4 +24,24 @@ namespace fmuw
 
   }
 
+  void FMU20Object::step()
+  {
+
+  }
+
+  const std::map<std::string, int> &FMU20Object::inputVariables()
+  {
+    return std::map<std::string, int>();
+  }
+
+  const std::map<std::string, int> &FMU20Object::outputVariables()
+  {
+    return std::map<std::string, int>();
+  }
+
+  double FMU20Object::doubleValue(const std::string &)
+  {
+    return 0.0;
+  }
+
 } // namespace fmuw

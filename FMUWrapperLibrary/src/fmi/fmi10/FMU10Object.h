@@ -26,6 +26,14 @@ namespace fmuw
     virtual void parse(boost::property_tree::ptree & tree) override;
     /** @brief initialize Инициализация модели */
     virtual void initialize(double entTime, double stepSize) override;
+    /** @brief Шаг расчета модели */
+    virtual void step() override;
+    /** @brief Возвращает все входные переменные с типом */
+    virtual const std::map<std::string, int> & inputVariables() override;
+    /** @brief Возвращает все выходные переменные с типом */
+    virtual const std::map<std::string, int> & outputVariables() override;
+    /** @brief Возвращает значение типа DOUBLE по имени */
+    virtual double doubleValue(const std::string &) override;
 
   private:
     FMU10ObjectAbstract * _Model_po = nullptr; ///< @brief Модель FMU

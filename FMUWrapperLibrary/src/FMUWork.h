@@ -40,6 +40,17 @@ namespace fmuw
     std::string lastError() const;
     /** @brief Инициализация модели */
     void modelInit(double entTime, double stepSize);
+    /** @brief Возвращает количество входных данных */
+    int inputsQty();
+    /** @brief Возвращает количество выходных данных */
+    int outputsQty();
+    /** @brief Шаг расчета модели */
+    void modelStep();
+
+    std::string outputVar(int index, int & type);
+    std::string inputVar(int index, int & type);
+    /** @brief Возвращает значение типа DOUBLE по имени */
+    double doubleValue(const std::string &);
 
   private:
     const std::string m_fmuPath;  ///< @brief Путь к распакованной FMU модели

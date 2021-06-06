@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <stdarg.h>
+#include <iostream>
 
 #include "CMEData.h"
 
@@ -39,14 +40,21 @@ namespace fmuw::fmi10
   }
 
   void CMEData::freeData() {
-    if(!_EventInfo_o.terminateSimulation) {
-      _Model_po->terminate(_Component_o);
+    if (_IsSimulationEnd == false) {
+      if(!_EventInfo_o.terminateSimulation) {
+        _Model_po->terminate(_Component_o);
+      }
+      _Model_po->freeModelInstance(_Component_o);
+      delete [] x;
+      delete [] z;
+      delete [] xdot;
+      delete [] prez;
+      x = nullptr;
+      z = nullptr;
+      xdot = nullptr;
+      prez = nullptr;
+      _IsSimulationEnd = true;
     }
-    _Model_po->freeModelInstance(_Component_o);
-    delete [] x;
-    delete [] z;
-    delete [] xdot;
-    delete [] prez;
   }
 
   void CMEData::createComponent() {
@@ -89,6 +97,7 @@ namespace fmuw::fmi10
 
     FormationVarTypes_v();
     FillVariables_v();
+    _IsSimulationEnd = false;
   }
 
   void CMEData::setVarData(const std::string &name, const char *value, size_t qty)
@@ -121,6 +130,9 @@ namespace fmuw::fmi10
 
   void CMEData::step(double stepSize)
   {
+    if (_IsSimulationEnd == true) {
+      return;
+    }
     if ((_CurrentTime_d == _EndTime_d) || (!x || !xdot || !z || !prez)) {
       freeData();
       return;
@@ -153,7 +165,6 @@ namespace fmuw::fmi10
     if (fmiFlag > fmiWarning) {
       throw std::logic_error("could not set states");
     }
-//    if (loggingOn) printf("Step %d to t=%.16g\n", nSteps, time);
     // Check for step event, e.g. dynamic state selection
     fmiBoolean stepEvent;
     fmiFlag = _Model_po->completedIntegratorStep(_Component_o, &stepEvent);
@@ -185,6 +196,38 @@ namespace fmuw::fmi10
       }
     }
     FillVariables_v();
+  }
+
+  bool CMEData::boolVar(const std::string &name) const
+  {
+    if (_BooleansVar_map.find(name) == _BooleansVar_map.end()) {
+      throw std::logic_error("No value found");
+    }
+    return _BooleansVar_map.at(name);
+  }
+
+  int CMEData::intVar(const std::string &name) const
+  {
+    if (_IntegersVar_map.find(name) == _IntegersVar_map.end()) {
+      throw std::logic_error("No value found");
+    }
+    return _IntegersVar_map.at(name);
+  }
+
+  double CMEData::doubleVar(const std::string & name) const
+  {
+    if (_DoublesVar_map.find(name) == _DoublesVar_map.end()) {
+      throw std::logic_error("No value found");
+    }
+    return _DoublesVar_map.at(name);
+  }
+
+  std::string CMEData::stringVar(const std::string &name) const
+  {
+    if (_StringsVar_map.find(name) == _StringsVar_map.end()) {
+      throw std::logic_error("No value found");
+    }
+    return _StringsVar_map.at(name);
   }
 
   void CMEData::FormationVarTypes_v()
@@ -231,7 +274,7 @@ namespace fmuw::fmi10
         case elm_Enumeration: {
           fmiInteger variable;
           _Model_po->getInteger(_Component_o, &vr, 1, &variable);
-          _IntagersVar_map[name] = variable;
+          _IntegersVar_map[name] = variable;
         } break;
         case elm_Boolean: {
           fmiBoolean variable;

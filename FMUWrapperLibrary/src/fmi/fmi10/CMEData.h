@@ -60,6 +60,17 @@ namespace fmuw
       /** @brief Один шаг расчета */
       void step( double stepSize);
 
+      const std::map<std::string, int> & outVarNames() const { return _OutVarNames_map; }
+      const std::map<std::string, int> & inVarNames() const { return _InVarNames_map; }
+      /** @brief Возвращает значение по имени */
+      bool boolVar(const std::string &name) const;
+      /** @brief Возвращает значение по имени */
+      int intVar(const std::string &name) const;
+      /** @brief Возвращает значение по имени */
+      double doubleVar(const std::string &name) const;
+      /** @brief Возвращает значение по имени */
+      std::string stringVar(const std::string &name) const;
+
     private:
       fmi10::FMU * _Model_po; ///< @brief Структура данных модели
       std::string _ModelID_str; ///< @brief global unique id of the fmu
@@ -76,9 +87,10 @@ namespace fmuw
       std::map<std::string, int> _OutVarNames_map; ///< @brief Набор всех выходных имен
       std::map<std::string, int> _InVarNames_map; ///< @brief Набор всех входных имен
       std::map<std::string, bool> _BooleansVar_map; ///< @brief Набор значений переменных типа BOOL
-      std::map<std::string, int> _IntagersVar_map; ///< @brief Набор значений переменных типа INT
+      std::map<std::string, int> _IntegersVar_map; ///< @brief Набор значений переменных типа INT
       std::map<std::string, double> _DoublesVar_map; ///< @brief Набор значений переменных типа double
       std::map<std::string, std::string> _StringsVar_map; ///< @brief Набор значений переменных типа String
+      bool _IsSimulationEnd = true; ///< @brief Флаг завершения симуляции
 
       /** @brief Формирование типов переменных */
       void FormationVarTypes_v();

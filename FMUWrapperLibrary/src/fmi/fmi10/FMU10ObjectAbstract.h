@@ -2,6 +2,7 @@
 #define FMU10OBJECTABSTRACT_H
 
 #include <string>
+#include <map>
 
 namespace fmuw
 {
@@ -19,6 +20,14 @@ namespace fmuw
     virtual void loadLibrary() = 0;
     /** @brief initialize Инициализация модели */
     virtual void initialize(double endTime, double stepSize) = 0;
+    /** @brief Шаг расчета модели */
+    virtual void step() = 0;
+    /** @brief Возвращает все входные переменные с типом */
+    virtual const std::map<std::string, int> & inputVariables() = 0;
+    /** @brief Возвращает все выходные переменные с типом */
+    virtual const std::map<std::string, int> & outputVariables() = 0;
+    /** @brief Возвращает значение типа DOUBLE по имени */
+    virtual double doubleValue(const std::string &) = 0;
 
   protected:
     std::string _FilenameDLL_str; ///< @brief Полное имя файла с библиотекой модели

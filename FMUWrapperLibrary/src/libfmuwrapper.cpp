@@ -123,3 +123,66 @@ int initialize(int number, double entTime, double stepSize)
   }
   return CODE_OK;
 }
+
+int outputsQty(int number)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      return work->outputsQty();
+    } catch(...) {
+      last_error = work->lastError();
+      return -1;
+    }
+  }
+  return 0;
+}
+
+int step(int number)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      work->modelStep();
+    } catch(...) {
+      last_error = work->lastError();
+      return CODE_FAILED;
+    }
+  }
+  return CODE_OK;
+}
+
+
+
+int outputVar(int number, int index, char *nameBuffer, int length, int &type)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      std::string name = work->outputVar(index, type);
+      if (name.size() > length) {
+        return CODE_FAILED;
+      }
+      strcpy(nameBuffer, name.c_str());
+    } catch(...) {
+      last_error = work->lastError();
+      return CODE_FAILED;
+    }
+  }
+  return CODE_OK;
+}
+
+double getDouble(int number, const char *name)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      return work->doubleValue(name);
+
+    } catch(...) {
+      last_error = work->lastError();
+      return 0.0;
+    }
+  }
+  return 0.0;
+}

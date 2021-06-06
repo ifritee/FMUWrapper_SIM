@@ -42,4 +42,24 @@ namespace fmuw
     _Model_po->initialize(entTime, stepSize);
   }
 
+  void FMU10Object::step()
+  {
+    _Model_po->step();
+  }
+
+  const std::map<std::string, int> &FMU10Object::inputVariables()
+  {
+    return _Model_po->inputVariables();
+  }
+
+  const std::map<std::string, int> &FMU10Object::outputVariables()
+  {
+    return _Model_po->outputVariables();
+  }
+
+  double FMU10Object::doubleValue(const std::string & name)
+  {
+    return _Model_po->doubleValue(name);
+  }
+
 } // namespace fmuw

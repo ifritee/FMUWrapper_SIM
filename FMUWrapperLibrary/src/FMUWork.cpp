@@ -73,5 +73,59 @@ namespace fmuw
     }
   }
 
+  int FMUWork::inputsQty()
+  {
+    return m_fmuObject->inputVariables().size();
+  }
+
+  int FMUWork::outputsQty()
+  {
+    return m_fmuObject->outputVariables().size();
+  }
+
+  void FMUWork::modelStep()
+  {
+    if (m_fmuObject) {
+      m_fmuObject->step();
+    }
+  }
+
+  std::string FMUWork::outputVar(int index, int &type)
+  {
+    std::map<std::string, int> vars = m_fmuObject->outputVariables();
+    int count = 0;
+    std::string name;
+    for (std::map<std::string, int>::iterator It = vars.begin(); It != vars.end(); ++It) {
+      if (count == index) {
+        type = It->second;
+        name = It->first;
+        break;
+      }
+      ++count;
+    }
+    return name;
+  }
+
+  std::string FMUWork::inputVar(int index, int &type)
+  {
+    std::map<std::string, int> vars = m_fmuObject->inputVariables();
+    int count = 0;
+    std::string name;
+    for (std::map<std::string, int>::iterator It = vars.begin(); It != vars.end(); ++It) {
+      if (count == index) {
+        type = It->second;
+        name = It->first;
+        break;
+      }
+      ++count;
+    }
+    return name;
+  }
+
+  double FMUWork::doubleValue(const std::string & name)
+  {
+    return m_fmuObject->doubleValue(name);
+  }
+
 } // namespace fmuw
 

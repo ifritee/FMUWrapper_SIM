@@ -172,6 +172,26 @@ namespace fmuw
     _ModelData_po->Initialize_v(0.0, endTime);
   }
 
+  void FMU10MExchObject::step()
+  {
+    _ModelData_po->step(_StepSize_d);
+  }
+
+  const std::map<std::string, int> & FMU10MExchObject::inputVariables()
+  {
+    return _ModelData_po->inVarNames();
+  }
+
+  const std::map<std::string, int> & FMU10MExchObject::outputVariables()
+  {
+    return _ModelData_po->outVarNames();
+  }
+
+  double FMU10MExchObject::doubleValue(const std::string & name)
+  {
+    return _ModelData_po->doubleVar(name);
+  }
+
   void FMU10MExchObject::printModelDescription(fmi10::ModelDescription* md)
   {
     fmi10::Element* e = (fmi10::Element*)md;

@@ -28,6 +28,14 @@ namespace fmuw
     virtual void loadLibrary() override;
     /** @brief initialize Инициализация модели */
     virtual void initialize(double endTime, double stepSize) override;
+    /** @brief Шаг расчета модели */
+    virtual void step() override;
+    /** @brief Возвращает все входные переменные с типом */
+    virtual const std::map<std::string, int> & inputVariables() override;
+    /** @brief Возвращает все выходные переменные с типом */
+    virtual const std::map<std::string, int> & outputVariables() override;
+    /** @brief Возвращает значение типа DOUBLE по имени */
+    virtual double doubleValue(const std::string &) override;
 
   private:
     fmi10::FMU * _ModelUnit_po;  ///< @brief Указатель на модель
