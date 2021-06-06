@@ -1,5 +1,5 @@
-#ifndef CMEDATA_H
-#define CMEDATA_H
+#ifndef CCSDATA_H
+#define CCSDATA_H
 
 #include <string>
 #include <map>
@@ -11,18 +11,16 @@ namespace fmuw
 {
   namespace fmi10
   {
-     class FMU;
 
-    /**
-     * @class CMEData
-     * @brief Обработка модели, получение значений и отработка модели по шагам */
-    class CMEData
+    class FMU;
+
+    class CCSData
     {
     public:
       /** @brief Конструктор */
-      explicit CMEData(const char * guid, FMU *fmu);
+      explicit CCSData(const char * guid, FMU * fmu);
       /** @brief Деструктор */
-      virtual ~CMEData();
+      virtual ~CCSData();
       /** @brief Освобождение ресурсов */
       void freeData();
       /** @brief создание компонентов */
@@ -57,8 +55,8 @@ namespace fmuw
        * @param value значение переменной
        * @param qty количество переменных */
       void setVarData(const std::string & name, const char *value[], size_t qty = 1);
-
-      /** @brief Один шаг расчета */
+      /**
+       *  @brief Один шаг расчета */
       void step( double stepSize);
       /** @brief Передает набор выходных пинов */
       const std::map<std::string, int> & outVarNames() const { return _OutVarNames_map; }
@@ -81,9 +79,6 @@ namespace fmuw
       fmiReal _EndTime_d = 0.0; ///< @brief Время останова
       fmiEventInfo _EventInfo_o; ///< @brief Обновление при вызове, инициализации и обновлении прерывания
       fmiCallbackFunctions _Callbacks_o; ///< @brief Набор Callback-функций для работы с моделью
-      int nx = 0; ///< @brief Количество состояний переменных
-      int nz = 0; ///< @brief Количество состояний событий переменных
-      double * x, * xdot, * z, * prez; ///< @brief Промежуточные состояния
       double _CurrentTime_d = 0.0; ///< @brief Текущее время
 
       std::map<std::string, int> _OutVarNames_map; ///< @brief Набор всех выходных имен
@@ -93,6 +88,7 @@ namespace fmuw
       std::map<std::string, double> _DoublesVar_map; ///< @brief Набор значений переменных типа double
       std::map<std::string, std::string> _StringsVar_map; ///< @brief Набор значений переменных типа String
       bool _IsSimulationEnd = true; ///< @brief Флаг завершения симуляции
+      double _SaveStepSize_d = 0.0;
 
       /** @brief Формирование типов переменных */
       void FormationVarTypes_v();
@@ -100,7 +96,7 @@ namespace fmuw
       void FillVariables_v();
     };
 
-  } //  namespace fmi10
-} // namespace fmuw
+  } //fmi10
+} // fmuw
 
-#endif // CMEDATA_H
+#endif // CCSDATA_H

@@ -127,5 +127,20 @@ namespace fmuw
     return m_fmuObject->doubleValue(name);
   }
 
+  bool FMUWork::boolValue(const std::string & name)
+  {
+    return m_fmuObject->boolValue(name);
+  }
+
+  int FMUWork::intValue(const std::string & name)
+  {
+    return m_fmuObject->intValue(name);
+  }
+
+  std::string FMUWork::strValue(const std::string & name)
+  {
+    return m_fmuObject->strValue(name);
+  }
+
 } // namespace fmuw
 

@@ -7,8 +7,6 @@
 
 #pragma once
 
-namespace fmuw::fmi10
-{
 #ifdef _MSC_VER
 #include <windows.h>
 #define WINDOWS 1
@@ -28,6 +26,9 @@ namespace fmuw::fmi10
 
 #include "fmiFunctions.h"
 #include "xml_parser10.h"
+
+namespace fmuw::fmi10
+{
 
   typedef const char* (*fGetTypesPlatform)();
   typedef const char* (*fGetVersion)();

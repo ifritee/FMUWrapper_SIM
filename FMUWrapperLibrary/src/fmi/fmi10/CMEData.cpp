@@ -1,31 +1,9 @@
-#include <stdexcept>
-#include <stdarg.h>
-#include <iostream>
-
 #include "CMEData.h"
+#include "Cconstants.h"
+#include "fmi_me.h"
 
 namespace fmuw::fmi10
 {
-
-  void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status, fmiString category, fmiString message, ...) {
-    char MessageBuffer_ac[1024];
-    va_list argp;
-    va_start(argp, message);
-    vsprintf(MessageBuffer_ac, message, argp);
-    va_end(argp);
-
-    std::string Status_str;
-    switch (status) {
-      case fmiOK:      Status_str = "ok";
-      case fmiWarning: Status_str = "warning";
-      case fmiDiscard: Status_str = "discard";
-      case fmiError:   Status_str = "error";
-      case fmiFatal:   Status_str = "fatal";
-    }
-    if (status == fmiError || status == fmiFatal) {
-      throw std::logic_error(Status_str + " >> " + instanceName + category + MessageBuffer_ac);
-    }
-  }
 
   CMEData::CMEData(const char * guid, FMU * fmu)
     : _ModelID_str(guid)
@@ -239,7 +217,14 @@ namespace fmuw::fmi10
         continue;
       }
       std::string name = getName(sv);
-      int type = sv->typeSpec->type;
+      int type = -1;
+      switch (sv->typeSpec->type) {
+      case elm_Real: type = FTReal_en; break;
+      case elm_Integer: case elm_Enumeration: type = FTInteger_en; break;
+      case elm_Boolean: type = FTBoolean_en; break;
+      case elm_String: type = FTString_en; break;
+      default: break;
+      }
       Enu Casuality_en = getCausality(sv);
       Enu Alias_en = getAlias(sv);
       Enu Variability_en = getVariability(sv);

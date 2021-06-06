@@ -64,8 +64,32 @@ extern "C" {
    * @param number номер модели
    * @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
   FMUWRAPPER_EXPORT int step(int number);
-
+  /**
+   * @brief getDouble Возвращает значение типа DOUBLE по имени
+   * @param number номер модели
+   * @param name Имя переменной
+   * @return значение переменной */
   FMUWRAPPER_EXPORT double getDouble(int number, const char * name);
+  /**
+   * @brief getBool Возвращает значение типа Bool по имени
+   * @param number номер модели
+   * @param name Имя переменной
+   * @return значение переменной */
+  FMUWRAPPER_EXPORT bool getBool(int number, const char * name);
+  /**
+   * @brief getBool Возвращает значение типа Int по имени
+   * @param number номер модели
+   * @param name Имя переменной
+   * @return значение переменной */
+  FMUWRAPPER_EXPORT int getInt(int number, const char * name);
+  /**
+   * @brief getBool Возвращает значение типа String по имени
+   * @param number номер модели
+   * @param name Имя переменной
+   * @param buffer Буфер для записи строки
+   * @param length Длина буфера
+   * @return Размер строки */
+  FMUWRAPPER_EXPORT int getString(int number, const char * name, char * buffer, int length);
 
 }
 

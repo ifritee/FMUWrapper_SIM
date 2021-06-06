@@ -34,6 +34,12 @@ namespace fmuw
     virtual const std::map<std::string, int> & outputVariables() override;
     /** @brief Возвращает значение типа DOUBLE по имени */
     virtual double doubleValue(const std::string &) override;
+    /** @brief Возвращает значение типа BOOL по имени */
+    virtual bool boolValue(const std::string &) override;
+    /** @brief Возвращает значение типа INT по имени */
+    virtual int intValue(const std::string &) override;
+    /** @brief Возвращает значение типа STRING по имени */
+    virtual std::string strValue(const std::string &) override;
 
   private:
     FMU10ObjectAbstract * _Model_po = nullptr; ///< @brief Модель FMU

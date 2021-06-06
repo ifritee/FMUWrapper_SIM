@@ -9,6 +9,7 @@
 
 #include "FMU10CoSimObject.h"
 #include "Cconstants.h"
+#include "CCSData.h"
 #include "xml_parser10.h"
 #include "fmi_cs.h"
 
@@ -88,27 +89,48 @@ namespace fmuw
 
   void FMU10CoSimObject::initialize(double endTime, double stepSize)
   {
-
+    _StepSize_d = stepSize;
+    if (_ModelData_po != nullptr) {
+      delete _ModelData_po;
+    }
+    _ModelData_po = new fmi10::CCSData(fmi10::getString(_ModelUnit_po->modelDescription, fmi10::att_guid), _ModelUnit_po);
+    _ModelData_po->createComponent(/*calloc, free*/);
+    _ModelData_po->Initialize_v(0.0, endTime);
   }
 
   void FMU10CoSimObject::step()
   {
-
+    _ModelData_po->step(_StepSize_d);
   }
 
   const std::map<std::string, int> & FMU10CoSimObject::inputVariables()
   {
-    return std::map<std::string, int>();
+    return _ModelData_po->inVarNames();
   }
 
   const  std::map<std::string, int> & FMU10CoSimObject::outputVariables()
   {
-    return std::map<std::string, int>();
+    return _ModelData_po->outVarNames();
   }
 
-  double FMU10CoSimObject::doubleValue(const std::string &)
+  double FMU10CoSimObject::doubleValue(const std::string & name)
   {
-    return 0.0;
+    return _ModelData_po->doubleVar(name);
+  }
+
+  bool FMU10CoSimObject::boolValue(const std::string & name)
+  {
+    return _ModelData_po->boolVar(name);
+  }
+
+  int FMU10CoSimObject::intValue(const std::string & name)
+  {
+    return _ModelData_po->intVar(name);
+  }
+
+  std::string FMU10CoSimObject::strValue(const std::string & name)
+  {
+    return _ModelData_po->stringVar(name);
   }
 
   void FMU10CoSimObject::printModelDescription(fmi10::ModelDescription *md)

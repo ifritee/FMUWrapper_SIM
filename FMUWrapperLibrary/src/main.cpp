@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 
+#include "Cconstants.h"
 #include "libfmuwrapper.h"
 
 int main(int argc, char *argv[])
@@ -8,7 +9,8 @@ int main(int argc, char *argv[])
   // 1. Указываем файл с fmu моделью ../Demo/demo_001/BouncingBall.fmu
   // 2. Получаем информацию о модели
   // 3. В зависимости от версии модели подгружаем нужные функции
-  const char * fmu = "../Demo/demo_FMI_1_me/bouncingBall.fmu";
+  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/cs/bouncingBall.fmu";
+//  const char * fmu = "../Demo/demo_FMI_1_me/bouncingBall.fmu";
 //  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/me/values.fmu";
 //  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/cs/bouncingBall.fmu";
   int module = unzipFMU(fmu, ".");
@@ -51,7 +53,7 @@ int main(int argc, char *argv[])
       }
       for(auto p : outVars) {
         switch (p.second) {
-        case 20: {  // double
+        case fmuw::FTReal_en: {  // double
           double var = getDouble(module, p.first.c_str());
           std::cout<<p.first<<" = "<<var<<std::endl;
         } break;

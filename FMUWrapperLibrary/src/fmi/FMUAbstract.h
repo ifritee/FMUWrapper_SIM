@@ -34,6 +34,12 @@ namespace fmuw
 
     /** @brief Возвращает значение типа DOUBLE по имени */
     virtual double doubleValue(const std::string &) = 0;
+    /** @brief Возвращает значение типа BOOL по имени */
+    virtual bool boolValue(const std::string &) = 0;
+    /** @brief Возвращает значение типа INT по имени */
+    virtual int intValue(const std::string &) = 0;
+    /** @brief Возвращает значение типа STRING по имени */
+    virtual std::string strValue(const std::string &) = 0;
 
   protected:
     std::string _FMUPath_str; ///< @brief Путь к папке с файлами FMU

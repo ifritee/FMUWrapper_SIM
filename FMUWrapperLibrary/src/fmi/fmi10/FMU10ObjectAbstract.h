@@ -28,6 +28,12 @@ namespace fmuw
     virtual const std::map<std::string, int> & outputVariables() = 0;
     /** @brief Возвращает значение типа DOUBLE по имени */
     virtual double doubleValue(const std::string &) = 0;
+    /** @brief Возвращает значение типа BOOL по имени */
+    virtual bool boolValue(const std::string &) = 0;
+    /** @brief Возвращает значение типа INT по имени */
+    virtual int intValue(const std::string &) = 0;
+    /** @brief Возвращает значение типа STRING по имени */
+    virtual std::string strValue(const std::string &) = 0;
 
   protected:
     std::string _FilenameDLL_str; ///< @brief Полное имя файла с библиотекой модели

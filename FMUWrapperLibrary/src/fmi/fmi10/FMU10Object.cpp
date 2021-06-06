@@ -62,4 +62,19 @@ namespace fmuw
     return _Model_po->doubleValue(name);
   }
 
+  bool FMU10Object::boolValue(const std::string & name)
+  {
+    return _Model_po->boolValue(name);
+  }
+
+  int FMU10Object::intValue(const std::string & name)
+  {
+    return _Model_po->intValue(name);
+  }
+
+  std::string FMU10Object::strValue(const std::string & name)
+  {
+    return _Model_po->strValue(name);
+  }
+
 } // namespace fmuw

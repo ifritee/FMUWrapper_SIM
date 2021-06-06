@@ -51,6 +51,12 @@ namespace fmuw
     std::string inputVar(int index, int & type);
     /** @brief Возвращает значение типа DOUBLE по имени */
     double doubleValue(const std::string &);
+    /** @brief Возвращает значение типа DOUBLE по имени */
+    bool boolValue(const std::string &);
+    /** @brief Возвращает значение типа DOUBLE по имени */
+    int intValue(const std::string &);
+    /** @brief Возвращает значение типа DOUBLE по имени */
+    std::string strValue(const std::string &);
 
   private:
     const std::string m_fmuPath;  ///< @brief Путь к распакованной FMU модели

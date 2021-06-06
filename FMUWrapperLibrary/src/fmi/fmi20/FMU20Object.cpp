@@ -44,4 +44,19 @@ namespace fmuw
     return 0.0;
   }
 
+  bool FMU20Object::boolValue(const std::string &)
+  {
+    return false;
+  }
+
+  int FMU20Object::intValue(const std::string &)
+  {
+    return 0;
+  }
+
+  std::string FMU20Object::strValue(const std::string &)
+  {
+    return std::string();
+  }
+
 } // namespace fmuw

@@ -20,11 +20,11 @@
 #define FALSE 0
 #define min(a,b) (a>b ? b : a)
 #define HANDLE void *
-  /* See http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html */
+/* See http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html */
 #include <dlfcn.h>
 #endif /* _MSC_VER */
 
-#include "fmiModelFunctions.h"
+#include "fmiFunctions.h"
 #include "xml_parser10.h"
 
 namespace fmuw::fmi10
@@ -234,6 +234,5 @@ namespace fmuw::fmi10
     fGetStateValueReferences getStateValueReferences; ///< @brief Возвращает ссылки на значения вектора состояния
     fTerminate terminate; ///< @brief Завершает оценку модели в конце моделирования
   };
-
 } // namespace fmuw::fmi10
 
