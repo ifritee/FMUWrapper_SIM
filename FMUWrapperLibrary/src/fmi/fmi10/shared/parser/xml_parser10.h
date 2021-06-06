@@ -94,14 +94,14 @@ namespace fmuw::fmi10
   } Type;
 
   // AST node for element ScalarVariable
-  typedef struct {
+  struct ScalarVariable {
     Elm type;          // element type
     const char** attributes; // null or n attribute value strings
     int n;             // size of attributes, even number
     Element* typeSpec; // one of Real, Integer, etc
     Element** directDependencies; // null or null-terminated list of Name
     int  modelIdx;     // only used in fmu10
-  } ScalarVariable;
+  } ;
 
   // AST node for element CoSimulation_StandAlone and CoSimulation_Tool
   typedef struct {

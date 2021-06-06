@@ -42,8 +42,9 @@ extern "C" {
    * @brief initialize Инициализация модели FMU
    * @param number номер модели
    * @param entTime Время окончания моделирования
+   * @param stepSize Размер шага
    * @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
-  FMUWRAPPER_EXPORT int initialize(int number, double entTime);
+  FMUWRAPPER_EXPORT int initialize(int number, double entTime, double stepSize);
 
 }
 

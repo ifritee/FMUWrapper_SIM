@@ -18,7 +18,7 @@ namespace fmuw
     /** @brief Загрузка библиотеки модели */
     virtual void loadLibrary() = 0;
     /** @brief initialize Инициализация модели */
-    virtual void initialize(double endTime) = 0;
+    virtual void initialize(double endTime, double stepSize) = 0;
 
   protected:
     std::string _FilenameDLL_str; ///< @brief Полное имя файла с библиотекой модели

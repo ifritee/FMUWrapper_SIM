@@ -37,9 +37,9 @@ namespace fmuw
     _Model_po->loadLibrary();
   }
 
-  void FMU10Object::initialize(double entTime)
+  void FMU10Object::initialize(double entTime, double stepSize)
   {
-    _Model_po->initialize(entTime);
+    _Model_po->initialize(entTime, stepSize);
   }
 
 } // namespace fmuw

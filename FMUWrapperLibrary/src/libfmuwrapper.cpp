@@ -110,12 +110,12 @@ int parsing(int number)
   return CODE_OK;
 }
 
-int initialize(int number, double entTime)
+int initialize(int number, double entTime, double stepSize)
 {
   if (number < temp_data.size() && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
-      work->modelInit(entTime);
+      work->modelInit(entTime, stepSize);
     } catch(...) {
       last_error = work->lastError();
       return CODE_FAILED;

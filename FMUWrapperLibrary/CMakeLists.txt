@@ -19,6 +19,7 @@ set(SOURCE_FILES
   src/fmi/fmi10/FMU10Object.cpp
   src/fmi/fmi10/FMU10CoSimObject.cpp
   src/fmi/fmi10/FMU10MExchObject.cpp
+  src/fmi/fmi10/CMEData.cpp
   src/fmi/fmi10/shared/parser/stack10.cpp
   src/fmi/fmi10/shared/parser/xml_parser10.cpp
   src/fmi/fmi20/FMU20Object.cpp
@@ -37,6 +38,7 @@ set(HEADER_FILES
   src/fmi/fmi10/FMU10ObjectAbstract.h
   src/fmi/fmi10/FMU10CoSimObject.h
   src/fmi/fmi10/FMU10MExchObject.h
+  src/fmi/fmi10/CMEData.h
   src/fmi/fmi10/shared/parser/stack10.h
   src/fmi/fmi10/shared/parser/xml_parser10.h
   src/fmi/fmi10/shared/fmi_cs.h

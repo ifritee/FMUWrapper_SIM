@@ -7,7 +7,8 @@ int main(int argc, char *argv[])
   // 1. Указываем файл с fmu моделью ../Demo/demo_001/BouncingBall.fmu
   // 2. Получаем информацию о модели
   // 3. В зависимости от версии модели подгружаем нужные функции
-  const char * fmu = "../Demo/demo_FMI_1_me/bouncingBall.fmu";
+//  const char * fmu = "../Demo/demo_FMI_1_me/bouncingBall.fmu";
+  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/me/values.fmu";
 //  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/cs/bouncingBall.fmu";
   int module = unzipFMU(fmu, ".");
   if (module < CODE_OK) {
@@ -22,7 +23,7 @@ int main(int argc, char *argv[])
     }
     //----- Работа с моделью -----
     // 1. Инициализация модели
-    if ( initialize(module, 20.0) < CODE_OK) {
+    if ( initialize(module, 20.0, 0.1) < CODE_OK) {
 
     }
 

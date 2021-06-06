@@ -66,10 +66,10 @@ namespace fmuw
     return m_lastError;
   }
 
-  void FMUWork::modelInit(double entTime)
+  void FMUWork::modelInit(double entTime, double stepSize)
   {
     if (m_fmuObject) {
-      m_fmuObject->initialize(entTime);
+      m_fmuObject->initialize(entTime, stepSize);
     }
   }
 

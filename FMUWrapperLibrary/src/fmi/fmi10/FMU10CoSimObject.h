@@ -23,7 +23,7 @@ namespace fmuw
     /** @brief Загрузка методов библиотеки */
     virtual void loadLibrary() override;
     /** @brief initialize Инициализация модели */
-    virtual void initialize(double endTime) override;
+    virtual void initialize(double endTime, double stepSize) override;
 
   private:
     fmi10::FMU * _ModelUnit_po;  ///< @brief Указатель на модель

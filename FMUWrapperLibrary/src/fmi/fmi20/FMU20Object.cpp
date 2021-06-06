@@ -19,7 +19,7 @@ namespace fmuw
 
   }
 
-  void FMU20Object::initialize(double entTime)
+  void FMU20Object::initialize(double entTime, double stepSize)
   {
 
   }

@@ -1,14 +1,15 @@
 #ifndef FMU10MEXCHOBJECT_H
 #define FMU10MEXCHOBJECT_H
 
+#include <map>
+//#include <any>
+
 #include "FMU10ObjectAbstract.h"
 
 namespace fmuw
 {
-
-  class CModelData;
-
   namespace fmi10 {
+    class CMEData;
     struct FMU;
     struct ModelDescription;
   }
@@ -26,11 +27,12 @@ namespace fmuw
     /** @brief Загрузка методов библиотеки */
     virtual void loadLibrary() override;
     /** @brief initialize Инициализация модели */
-    virtual void initialize(double endTime) override;
+    virtual void initialize(double endTime, double stepSize) override;
 
   private:
     fmi10::FMU * _ModelUnit_po;  ///< @brief Указатель на модель
-    CModelData * _ModelData_po = nullptr; ///< @brief Данные текущей модели
+    fmi10::CMEData * _ModelData_po = nullptr; ///< @brief Данные текущей модели
+    double _StepSize_d = 0.1; ///< @brief Размер одного шага
 
     /**
      * @brief Вывод данных о загружаемой модели
