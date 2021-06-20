@@ -25,7 +25,9 @@ namespace fmuw
 
   FMU10MExchObject::~FMU10MExchObject()
   {
-    _ModelData_po->freeData();
+    if (_ModelData_po) {
+      _ModelData_po->freeData();
+    }
 #if WINDOWS
     FreeLibrary(_ModelUnit_po->dllHandle);
 #else /* WINDOWS */

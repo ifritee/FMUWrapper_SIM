@@ -11,21 +11,21 @@
  * Author: Adrian Tirea
  * ---------------------------------------------------------------------------*/
 
-#include "XmlParser.h"
+#include "fmu20/XmlParser.h"
 #include <utility>
 #include <vector>
 #include <string.h>
-#include "XmlElement.h"
-#include "XmlParserException.h"
+#include "fmu20/XmlElement.h"
+#include "fmu20/XmlParserException.h"
 
-//#ifndef STANDALONE_XML_PARSER
+#ifdef STANDALONE_XML_PARSER
 #define logThis(n, ...) printf(__VA_ARGS__); printf("\n")
 #define checkStrdup(str) strdup(str)
-//#else
-//#include "GlobalIncludes.h"
-//#include "logging.h"  // logThis
-//#include "minutil.h"  // checkStrdup
-//#endif  // STANDALONE_XML_PARSER
+#else
+#include "GlobalIncludes.h"
+#include "logging.h"  // logThis
+#include "minutil.h"  // checkStrdup
+#endif  // STANDALONE_XML_PARSER
 
 /* Helper functions to check validity of xml. */
 static int checkAttribute(const char* att);
@@ -72,7 +72,7 @@ const char *XmlParser::enuNames[SIZEOF_ENU] = {
 
 XmlParser::XmlParser(char *xmlPath) {
     this->xmlPath = (char *)checkStrdup(xmlPath);
-//    xmlReader = NULL;
+    xmlReader = NULL;
 }
 
 XmlParser::~XmlParser() {
@@ -82,59 +82,59 @@ XmlParser::~XmlParser() {
     //xmlCleanupParser();
 }
 
-//ModelDescription *XmlParser::parse() {
-//    xmlReader = xmlReaderForFile(xmlPath, NULL, 0);
-//    ModelDescription *md = NULL;
-//    if (xmlReader != NULL) {
-//        try {
-//            if (readNextInXml()) {
-//                // I expect that first element is fmiModelDescription.
-//                if (0 != strcmp((char *)xmlTextReaderConstLocalName(xmlReader), elmNames[elm_fmiModelDescription])) {
-//                    throw XmlParserException("Expected '%s' element. Found instead: '%s'.",
-//                        elmNames[elm_fmiModelDescription],
-//                        xmlTextReaderConstLocalName(xmlReader));
-//                }
+ModelDescription *XmlParser::parse() {
+    xmlReader = xmlReaderForFile(xmlPath, NULL, 0);
+    ModelDescription *md = NULL;
+    if (xmlReader != NULL) {
+        try {
+            if (readNextInXml()) {
+                // I expect that first element is fmiModelDescription.
+                if (0 != strcmp((char *)xmlTextReaderConstLocalName(xmlReader), elmNames[elm_fmiModelDescription])) {
+                    throw XmlParserException("Expected '%s' element. Found instead: '%s'.",
+                        elmNames[elm_fmiModelDescription],
+                        xmlTextReaderConstLocalName(xmlReader));
+                }
 
-//                md = new ModelDescription;
-//                md->type = elm_fmiModelDescription;
-//                parseElementAttributes((Element *)md);
-//                parseChildElements(md);
-//            } else {
-//                throw XmlParserException("Syntax error parsing xml file '%s'", xmlPath);
-//            }
-//        } catch (XmlParserException& e) {
-//            logThis(ERROR_ERROR, "%s", e.what());
-//            md = NULL;
-//        } catch (std::bad_alloc& ) {
-//            logThis(ERROR_FATAL, "Out of memory");
-//            md = NULL;
-//        }
-//        xmlFreeTextReader(xmlReader);
-//    } else {
-//        logThis(ERROR_ERROR, "Unable to open '%s'", xmlPath);
-//    }
+                md = new ModelDescription;
+                md->type = elm_fmiModelDescription;
+                parseElementAttributes((Element *)md);
+                parseChildElements(md);
+            } else {
+                throw XmlParserException("Syntax error parsing xml file '%s'", xmlPath);
+            }
+        } catch (XmlParserException& e) {
+            logThis(ERROR_ERROR, "%s", e.what());
+            md = NULL;
+        } catch (std::bad_alloc& ) {
+            logThis(ERROR_FATAL, "Out of memory");
+            md = NULL;
+        }
+        xmlFreeTextReader(xmlReader);
+    } else {
+        logThis(ERROR_ERROR, "Unable to open '%s'", xmlPath);
+    }
 
-//    return validate(md);
-//}
+    return validate(md);
+}
 
 void XmlParser::parseElementAttributes(Element *element, bool ignoreUnknownAttributes) {
-//    while (xmlTextReaderMoveToNextAttribute(xmlReader)) {
-//        xmlChar *name = xmlTextReaderName(xmlReader);
-//        xmlChar *value = xmlTextReaderValue(xmlReader);
-//        try {
-//            XmlParser::Att key = checkAttribute((char *)name);
-//            char *theValue = value ? (char *)checkStrdup((char *)value) : NULL;
-//            element->attributes.insert(std::pair<XmlParser::Att, char *>(key, theValue));
-//        } catch (XmlParserException &ex) {
-//            if (ignoreUnknownAttributes) {
-//                xmlFree(name);
-//                xmlFree(value);
-//                throw;
-//            }
-//        }
-//        xmlFree(name);
-//        xmlFree(value);
-//    }
+    while (xmlTextReaderMoveToNextAttribute(xmlReader)) {
+        xmlChar *name = xmlTextReaderName(xmlReader);
+        xmlChar *value = xmlTextReaderValue(xmlReader);
+        try {
+            XmlParser::Att key = checkAttribute((char *)name);
+            char *theValue = value ? (char *)checkStrdup((char *)value) : NULL;
+            element->attributes.insert(std::pair<XmlParser::Att, char *>(key, theValue));
+        } catch (XmlParserException &ex) {
+            if (ignoreUnknownAttributes) {
+                xmlFree(name);
+                xmlFree(value);
+                throw;
+            }
+        }
+        xmlFree(name);
+        xmlFree(value);
+    }
 }
 
 void XmlParser::parseElementAttributes(Element *element) {
@@ -142,65 +142,65 @@ void XmlParser::parseElementAttributes(Element *element) {
 }
 
 void XmlParser::parseChildElements(Element *el) {
-//    int elementIsEmpty = xmlTextReaderIsEmptyElement(xmlReader);
-//    if (elementIsEmpty == -1) {
-//        throw XmlParserException("Error parsing xml file '%s'", xmlPath);
-//    } else if (elementIsEmpty == 1) {
-//        return;
-//    }
+    int elementIsEmpty = xmlTextReaderIsEmptyElement(xmlReader);
+    if (elementIsEmpty == -1) {
+        throw XmlParserException("Error parsing xml file '%s'", xmlPath);
+    } else if (elementIsEmpty == 1) {
+        return;
+    }
 
-//    bool ret = readNextInXml();
-//    while (ret  && xmlTextReaderNodeType(xmlReader) != XML_READER_TYPE_END_ELEMENT) {
-//        if (xmlTextReaderNodeType(xmlReader) == XML_READER_TYPE_ELEMENT) {
-//            const char *localName = (char *)xmlTextReaderConstLocalName(xmlReader);
-//            int depthBefore = xmlTextReaderDepth(xmlReader);
-//            int isEmptyElement = xmlTextReaderIsEmptyElement(xmlReader);
-//            el->handleElement(this, localName, isEmptyElement);
-//            if (!isEmptyElement) {
-//                int depthAfter = xmlTextReaderDepth(xmlReader);
-//                if (depthBefore != depthAfter) {
-//                    throw XmlParserException("Parser error. Depth wrong after parsing sub-tree for %s.", localName);
-//                }
-//            }
-//        }
-//        ret = readNextInXml();
-//    }
-//    if (!ret) {
-//        throw XmlParserException("Error parsing xml file '%s'", xmlPath);
-//    }
+    bool ret = readNextInXml();
+    while (ret  && xmlTextReaderNodeType(xmlReader) != XML_READER_TYPE_END_ELEMENT) {
+        if (xmlTextReaderNodeType(xmlReader) == XML_READER_TYPE_ELEMENT) {
+            const char *localName = (char *)xmlTextReaderConstLocalName(xmlReader);
+            int depthBefore = xmlTextReaderDepth(xmlReader);
+            int isEmptyElement = xmlTextReaderIsEmptyElement(xmlReader);
+            el->handleElement(this, localName, isEmptyElement);
+            if (!isEmptyElement) {
+                int depthAfter = xmlTextReaderDepth(xmlReader);
+                if (depthBefore != depthAfter) {
+                    throw XmlParserException("Parser error. Depth wrong after parsing sub-tree for %s.", localName);
+                }
+            }
+        }
+        ret = readNextInXml();
+    }
+    if (!ret) {
+        throw XmlParserException("Error parsing xml file '%s'", xmlPath);
+    }
 }
 
 void XmlParser::parseEndElement() {
-//    bool ret = readNextInXml();
-//    while (ret  && xmlTextReaderNodeType(xmlReader) != XML_READER_TYPE_END_ELEMENT) {
-//        ret = readNextInXml();
-//    }
-//    if (!ret) {
-//        throw XmlParserException("Error parsing xml file '%s'", xmlPath);
-//    }
+    bool ret = readNextInXml();
+    while (ret  && xmlTextReaderNodeType(xmlReader) != XML_READER_TYPE_END_ELEMENT) {
+        ret = readNextInXml();
+    }
+    if (!ret) {
+        throw XmlParserException("Error parsing xml file '%s'", xmlPath);
+    }
 }
 
 void XmlParser::parseSkipChildElement() {
-//    int depthBefore = xmlTextReaderDepth(xmlReader);
-//    int depth = 0;
-//    do {
-//        bool ret = readNextInXml();
-//        if (!ret) {
-//            throw XmlParserException("Error parsing xml file '%s'", xmlPath);
-//        }
-//        depth = xmlTextReaderDepth(xmlReader);
-//    } while (depth >= depthBefore);
+    int depthBefore = xmlTextReaderDepth(xmlReader);
+    int depth = 0;
+    do {
+        bool ret = readNextInXml();
+        if (!ret) {
+            throw XmlParserException("Error parsing xml file '%s'", xmlPath);
+        }
+        depth = xmlTextReaderDepth(xmlReader);
+    } while (depth >= depthBefore);
 }
 
 bool XmlParser::readNextInXml() {
-//    int ret;
-//    do {
-//        ret = xmlTextReaderRead(xmlReader);
-//    } while (ret == 1 && xmlTextReaderNodeType(xmlReader) == XML_READER_TYPE_COMMENT);
+    int ret;
+    do {
+        ret = xmlTextReaderRead(xmlReader);
+    } while (ret == 1 && xmlTextReaderNodeType(xmlReader) == XML_READER_TYPE_COMMENT);
 
-//    if (ret != 1) {
-//        return false;
-//    }
+    if (ret != 1) {
+        return false;
+    }
     return true;
 }
 

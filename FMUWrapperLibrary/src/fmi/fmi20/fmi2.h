@@ -4,8 +4,7 @@
  * Copyright QTronic GmbH. All rights reserved.
  * -------------------------------------------------------------------------*/
 
-#ifndef FMI_H
-#define FMI_H
+#pragma once
 
 #ifdef _MSC_VER
 #include <windows.h>
@@ -28,13 +27,15 @@
 
 #include "XmlParserCApi.h"
 
-typedef struct {
+namespace fmuw::fmi20
+{
+  struct FMU {
     ModelDescription* modelDescription;
 
     HMODULE dllHandle; // fmu.dll handle
     /***************************************************
-    Common Functions
-    ****************************************************/
+      Common Functions
+      ****************************************************/
     fmi2GetTypesPlatformTYPE         *getTypesPlatform;
     fmi2GetVersionTYPE               *getVersion;
     fmi2SetDebugLoggingTYPE          *setDebugLogging;
@@ -61,8 +62,8 @@ typedef struct {
     fmi2DeSerializeFMUstateTYPE      *deSerializeFMUstate;
     fmi2GetDirectionalDerivativeTYPE *getDirectionalDerivative;
     /***************************************************
-    Functions for FMI2 for Co-Simulation
-    ****************************************************/
+      Functions for FMI2 for Co-Simulation
+      ****************************************************/
     fmi2SetRealInputDerivativesTYPE  *setRealInputDerivatives;
     fmi2GetRealOutputDerivativesTYPE *getRealOutputDerivatives;
     fmi2DoStepTYPE                   *doStep;
@@ -73,8 +74,8 @@ typedef struct {
     fmi2GetBooleanStatusTYPE         *getBooleanStatus;
     fmi2GetStringStatusTYPE          *getStringStatus;
     /***************************************************
-    Functions for FMI2 for Model Exchange
-    ****************************************************/
+      Functions for FMI2 for Model Exchange
+      ****************************************************/
     fmi2EnterEventModeTYPE                *enterEventMode;
     fmi2NewDiscreteStatesTYPE             *newDiscreteStates;
     fmi2EnterContinuousTimeModeTYPE       *enterContinuousTimeMode;
@@ -85,7 +86,7 @@ typedef struct {
     fmi2GetEventIndicatorsTYPE            *getEventIndicators;
     fmi2GetContinuousStatesTYPE           *getContinuousStates;
     fmi2GetNominalsOfContinuousStatesTYPE *getNominalsOfContinuousStates;
-} FMU;
+  };
+}
 
-#endif // FMI_H
 

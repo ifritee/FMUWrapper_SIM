@@ -7,7 +7,8 @@
 namespace fmuw
 {
 
-  void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status, fmiString category, fmiString message, ...) {
+  void fmuLogger(fmiComponent c, fmiString instanceName, fmiStatus status, fmiString category, fmiString message, ...)
+  {
     char MessageBuffer_ac[1024];
     va_list argp;
     va_start(argp, message);

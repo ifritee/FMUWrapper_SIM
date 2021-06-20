@@ -78,7 +78,7 @@ typedef enum {
 // Otherwise, return the root node md of the AST. From the result of this
 // function user can access all other elements from ModelDescription.xml.
 // The receiver must call freeModelDescription(md) to release AST memory.
-//ModelDescription* parse(char* xmlPath);
+ModelDescription* parse(char* xmlPath);
 void freeModelDescription(ModelDescription *md);
 
 

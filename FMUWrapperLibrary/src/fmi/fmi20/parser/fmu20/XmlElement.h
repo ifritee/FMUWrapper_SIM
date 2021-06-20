@@ -16,7 +16,7 @@
 
 #include <map>
 #include <vector>
-#include "XmlParser.h"
+#include "fmu20/XmlParser.h"
 
 class Element {
  public:

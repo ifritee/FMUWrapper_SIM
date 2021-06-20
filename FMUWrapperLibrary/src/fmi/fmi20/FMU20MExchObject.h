@@ -1,23 +1,20 @@
 #pragma once
 
 #include "FMU10ObjectAbstract.h"
+#include "XmlParserCApi.h"
 
 namespace fmuw
 {
 
-  namespace fmi10 {
-    struct FMU;
-    struct CCSData;
-    struct ModelDescription;
-  }
+  namespace fmi20 { struct FMU; class CME20Data; }
 
-  class FMU10CoSimObject : public FMU10ObjectAbstract
+  class FMU20MExchObject : public FMU10ObjectAbstract
   {
   public:
     /** @brief Конструктор */
-    explicit FMU10CoSimObject(const std::string & path);
+    explicit FMU20MExchObject(const std::string & path);
     /** @brief Деструктор */
-    virtual ~FMU10CoSimObject();
+    virtual ~FMU20MExchObject();
     /** @brief Распарсивание данных модели */
     virtual void parse(std::string & fileName) override;
     /** @brief Загрузка методов библиотеки */
@@ -40,16 +37,19 @@ namespace fmuw
     virtual std::string strValue(const std::string &) override;
 
   private:
-    fmi10::FMU * _ModelUnit_po;  ///< @brief Указатель на модель
-    fmi10::CCSData * _ModelData_po = nullptr; ///< @brief Данные текущей модели
     double _StepSize_d = 0.1; ///< @brief Размер одного шага
+    fmi20::FMU * _ModelUnit_po;  ///< @brief Указатель на модели
+    fmi20::CME20Data * _ModelData_po = nullptr; ///< @brief Данные текущей модели
 
     /**
      * @brief Вывод данных о загружаемой модели
      * @param md Дескриптор модели */
-    void printModelDescription(fmi10::ModelDescription* md);
-
+    void printModelDescription(ModelDescription* md);
+    /**
+     * @brief getFunctionAddress Ищет адрес функции по имени
+     * @param functionName Имя функции
+     * @return Указатель на функцию */
     void* getFunctionAddress(const char* functionName);
   };
 
-} // namespace fmuw
+}

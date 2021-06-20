@@ -11,20 +11,20 @@
  * Author: Adrian Tirea
  * ---------------------------------------------------------------------------*/
 
-#include "XmlElement.h"
+#include "fmu20/XmlElement.h"
 #include <assert.h>
 #include <map>
 #include <string>
 #include <vector>
 #include <string.h> // strcmp
-#include "XmlParserException.h"
+#include "fmu20/XmlParserException.h"
 
-//#ifdef STANDALONE_XML_PARSER
+#ifdef STANDALONE_XML_PARSER
 #define logThis(n, ...) printf(__VA_ARGS__); printf("\n")
-//#else
-//#include "GlobalIncludes.h"
-//#include "logging.h"  // logThis
-//#endif  // STANDALONE_XML_PARSER
+#else
+#include "GlobalIncludes.h"
+#include "logging.h"  // logThis
+#endif  // STANDALONE_XML_PARSER
 
 Element::~Element() {
     for (std::map<XmlParser::Att, char *>::const_iterator it = attributes.begin(); it != attributes.end(); ++it) {

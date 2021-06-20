@@ -46,7 +46,7 @@
    - Nov. 14, 2011: First public Version
 
 
-   Copyright © 2011 MODELISAR consortium,
+   Copyright Â© 2011 MODELISAR consortium,
                2012-2013 Modelica Association Project "FMI"
                All rights reserved.
    This file is licensed by the copyright holders under the BSD 2-Clause License
@@ -126,22 +126,22 @@ typedef void*     (*fmi2CallbackAllocateMemory)(size_t, size_t);
 typedef void      (*fmi2CallbackFreeMemory)    (void*);
 typedef void      (*fmi2StepFinished)          (fmi2ComponentEnvironment, fmi2Status);
 
-typedef struct {
+struct fmi2CallbackFunctions {
    const fmi2CallbackLogger         logger;
    const fmi2CallbackAllocateMemory allocateMemory;
    const fmi2CallbackFreeMemory     freeMemory;
    const fmi2StepFinished           stepFinished;
    const fmi2ComponentEnvironment   componentEnvironment;
-} fmi2CallbackFunctions;
+};
 
-typedef struct {
+struct fmi2EventInfo {
 	 fmi2Boolean newDiscreteStatesNeeded;
    fmi2Boolean terminateSimulation;
    fmi2Boolean nominalsOfContinuousStatesChanged;
    fmi2Boolean valuesOfContinuousStatesChanged;
    fmi2Boolean nextEventTimeDefined;
    fmi2Real    nextEventTime;
-} fmi2EventInfo;
+};
 
 
 /* reset alignment policy to the one set before reading this file */

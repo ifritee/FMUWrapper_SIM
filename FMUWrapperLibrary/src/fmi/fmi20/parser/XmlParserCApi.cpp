@@ -9,20 +9,20 @@
  * ---------------------------------------------------------------------------*/
 
 #include "XmlParserCApi.h"
-#include "XmlParser.h"
-#include "XmlElement.h"
+#include "fmu20/XmlParser.h"
+#include "fmu20/XmlElement.h"
 
-//#ifdef STANDALONE_XML_PARSER
+#ifdef STANDALONE_XML_PARSER
 #define logThis(n, ...) printf(__VA_ARGS__); printf("\n")
 #define checkStrdup(str) strdup(str)
-//#else
-//#include "logging.h"  // logThis
-//#endif  // STANDALONE_XML_PARSER
+#else
+#include "logging.h"  // logThis
+#endif  // STANDALONE_XML_PARSER
 
-//ModelDescription* parse(char* xmlPath) {
-//    XmlParser parser(xmlPath);
-//    return parser.parse();
-//}
+ModelDescription* parse(char* xmlPath) {
+    XmlParser parser(xmlPath);
+    return parser.parse();
+}
 void freeModelDescription(ModelDescription *md) {
     if (md) delete md;
 }

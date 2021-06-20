@@ -25,11 +25,15 @@ namespace fmuw
 
   FMU10CoSimObject::~FMU10CoSimObject()
   {
+    if (_ModelData_po) {
+      _ModelData_po->freeData();
+    }
 #if WINDOWS
     FreeLibrary(_ModelUnit_po->dllHandle);
 #else /* WINDOWS */
     dlclose(_ModelUnit_po->dllHandle);
 #endif /* WINDOWS */
+    delete _ModelData_po;
     delete _ModelUnit_po;
   }
 

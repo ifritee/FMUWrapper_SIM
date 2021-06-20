@@ -35,6 +35,7 @@ namespace fmuw
   constexpr const char * DESRIPTION_FILE = "modelDescription.xml";
   constexpr const char * LIBRARY_PATH = DLL_DIR;
   constexpr const char * LIBRARY_SUFFIX = DLL_SUFFIX;
+  constexpr const char * RESOURCES_DIR = "resources";
 
   /**
    * @enum EFMITypes

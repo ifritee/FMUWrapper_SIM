@@ -24,6 +24,9 @@ set(SOURCE_FILES
   src/fmi/fmi10/shared/parser/stack10.cpp
   src/fmi/fmi10/shared/parser/xml_parser10.cpp
   src/fmi/fmi20/FMU20Object.cpp
+  src/fmi/fmi20/FMU20MExchObject.cpp
+  src/fmi/fmi20/FMU20CoSimObject.cpp
+  src/fmi/fmi20/CME20Data.cpp
   src/fmi/fmi20/parser/XmlElement.cpp
   src/fmi/fmi20/parser/XmlParser.cpp
   src/fmi/fmi20/parser/XmlParserCApi.cpp
@@ -50,10 +53,13 @@ set(HEADER_FILES
   src/fmi/fmi10/shared/include/fmiModelTypes.h
   src/fmi/fmi10/shared/include/fmiPlatformTypes.h
   src/fmi/fmi20/FMU20Object.h
-  src/fmi/fmi20/parser/XmlElement.h
-  src/fmi/fmi20/parser/XmlParser.h
+  src/fmi/fmi20/FMU20MExchObject.h
+  src/fmi/fmi20/FMU20CoSimObject.h
+  src/fmi/fmi20/CME20Data.h
   src/fmi/fmi20/parser/XmlParserCApi.h
-  src/fmi/fmi20/parser/XmlParserException.h
+  src/fmi/fmi20/parser/fmu20/XmlElement.h
+  src/fmi/fmi20/parser/fmu20/XmlParser.h
+  src/fmi/fmi20/parser/fmu20/XmlParserException.h
   src/fmi/fmi20/include/fmi2Functions.h
   src/fmi/fmi20/include/fmi2FunctionTypes.h
   src/fmi/fmi20/include/fmi2TypesPlatform.h
@@ -70,6 +76,8 @@ include_directories(
   src/fmi/fmi20/
   src/fmi/fmi20/include
   src/fmi/fmi20/parser
+  src/fmi/fmi20/parser/fmu20
+  src/fmi/fmi20/parser/libxml
   src/common
   third_party/libzip/lib
   third_party/libexpat
@@ -97,8 +105,10 @@ target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
 find_package(Threads REQUIRED)
 find_package(Boost 1.69 COMPONENTS program_options log log_setup REQUIRED)
 find_package(ZLIB)
+find_package(LibXml2 REQUIRED)
 
 target_link_libraries(${PROJECT_NAME} ZLIB::ZLIB)
+target_link_libraries(${PROJECT_NAME} ${LIBXML2_LIBRARIES})
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})

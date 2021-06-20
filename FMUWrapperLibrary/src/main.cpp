@@ -9,10 +9,14 @@ int main(int argc, char *argv[])
   // 1. Указываем файл с fmu моделью ../Demo/demo_001/BouncingBall.fmu
   // 2. Получаем информацию о модели
   // 3. В зависимости от версии модели подгружаем нужные функции
-  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/cs/bouncingBall.fmu";
+//  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/cs/bouncingBall.fmu";
 //  const char * fmu = "../Demo/demo_FMI_1_me/bouncingBall.fmu";
 //  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/me/values.fmu";
 //  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/cs/bouncingBall.fmu";
+//    const char * fmu = "/home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_cs/bouncingBall.fmu";
+    const char * fmu = "/home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_me/bouncingBall.fmu";
+//    const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu20/me/values.fmu";
+
   int module = unzipFMU(fmu, ".");
   if (module < CODE_OK) {
     char error_buffer[1024] = {0};
@@ -55,7 +59,9 @@ int main(int argc, char *argv[])
         switch (p.second) {
         case fmuw::FTReal_en: {  // double
           double var = getDouble(module, p.first.c_str());
-          std::cout<<p.first<<" = "<<var<<std::endl;
+          if (p.first == "h") {
+            std::cout<<p.first<<" = "<<var<<std::endl;
+          }
         } break;
         default:
           break;

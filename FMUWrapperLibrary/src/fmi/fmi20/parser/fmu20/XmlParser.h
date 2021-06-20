@@ -14,12 +14,12 @@
 #ifndef FMU20_XML_PARSER_H
 #define FMU20_XML_PARSER_H
 
-//#include <libxml/xmlreader.h>
+#include <libxml/xmlreader.h>
 
-//#ifdef _MSC_VER
-//#pragma comment(lib, "libxml2.lib")
-//#pragma comment(lib, "wsock32.lib")
-//#endif
+#ifdef _MSC_VER
+#pragma comment(lib, "libxml2.lib")
+#pragma comment(lib, "wsock32.lib")
+#endif
 
 #ifndef fmi2TypesPlatform_h
 // same as in FMI 2.0 specification
@@ -89,7 +89,7 @@ class XmlParser {
 
  private:
     char *xmlPath;
-//    xmlTextReaderPtr xmlReader;
+    xmlTextReaderPtr xmlReader;
 
  public:
     // return the type of this element. Int value match the index in elmNames.
@@ -107,7 +107,7 @@ class XmlParser {
     explicit XmlParser(char *xmlPath);
     ~XmlParser();
     // return NULL on errors. Caller must free the result if not NULL.
-//    ModelDescription *parse();
+    ModelDescription *parse();
 
     // throw XmlParserException if attribute invalid.
     void parseElementAttributes(Element *element);

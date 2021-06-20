@@ -1,30 +1,22 @@
-#ifndef FMU20OBJECT_H
-#define FMU20OBJECT_H
+#pragma once
 
-#include "FMUAbstract.h"
+#include "FMU10ObjectAbstract.h"
 
 namespace fmuw
 {
-  class FMU10ObjectAbstract;
-
-  /**
-   * @class FMU20Object
-   * @brief Объект модели FMU с интерфейсом FMI 2.0
-   * @author Никишин Е. В.
-   * @date 22.05.2021 */
-  class FMU20Object : public FMUAbstract
+  class FMU20CoSimObject : public FMU10ObjectAbstract
   {
   public:
     /** @brief Конструктор */
-    explicit FMU20Object(const std::string & path);
+    explicit FMU20CoSimObject(const std::string & path);
     /** @brief Деструктор */
-    virtual ~FMU20Object();
-    /**
-     * @brief Считывание данных из xml-файла
-     * @param tree дерево элеентов из xml-файла */
-    virtual void parse(boost::property_tree::ptree & tree) override;
+    virtual ~FMU20CoSimObject();
+    /** @brief Распарсивание данных модели */
+    virtual void parse(std::string & fileName) override;
+    /** @brief Загрузка методов библиотеки */
+    virtual void loadLibrary() override;
     /** @brief initialize Инициализация модели */
-    virtual void initialize(double entTime, double stepSize) override;
+    virtual void initialize(double endTime, double stepSize) override;
     /** @brief Шаг расчета модели */
     virtual void step() override;
     /** @brief Возвращает все входные переменные с типом */
@@ -41,9 +33,7 @@ namespace fmuw
     virtual std::string strValue(const std::string &) override;
 
   private:
-    FMU10ObjectAbstract * _Model_po = nullptr; ///< @brief Модель FMU
+    double _StepSize_d = 0.1; ///< @brief Размер одного шага
   };
 
 } // namespace fmuw
-
-#endif // FMU20OBJECT_H
