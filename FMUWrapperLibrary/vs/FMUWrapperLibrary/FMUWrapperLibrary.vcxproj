@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{74e1389f-aa3b-440e-a14c-f9f3ed3a4fbd}</ProjectGuid>
+    <RootNamespace>FMUWrapperLibrary</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;FMUWRAPPERLIBRARY_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;FMUWRAPPERLIBRARY_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;FMUWRAPPERLIBRARY_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;STANDALONE_XML_PARSER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;FMUWRAPPERLIBRARY_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\common\Cconstants.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi10\CCSData.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi10\CMEData.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi10\FMU10CoSimObject.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi10\FMU10MExchObject.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi10\FMU10Object.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi10\shared\parser\stack10.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi10\shared\parser\xml_parser10.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi20\CCS20Data.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi20\CME20Data.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi20\FMU20CoSimObject.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi20\FMU20MExchObject.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi20\FMU20Object.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi20\parser\XmlElement.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi20\parser\XmlParser.cpp" />
+    <ClCompile Include="..\..\src\fmi\fmi20\parser\XmlParserCApi.cpp" />
+    <ClCompile Include="..\..\src\fmi\FMUAbstract.cpp" />
+    <ClCompile Include="..\..\src\FMUWork.cpp" />
+    <ClCompile Include="..\..\src\libfmuwrapper.cpp" />
+    <ClCompile Include="dllmain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\common\Cconstants.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\CCSData.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\CMEData.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\FMU10CoSimObject.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\FMU10MExchObject.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\FMU10Object.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\FMU10ObjectAbstract.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\shared\fmi_cs.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\shared\fmi_me.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\shared\include\fmiFunctions.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\shared\include\fmiModelFunctions.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\shared\include\fmiModelTypes.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\shared\include\fmiPlatformTypes.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\shared\parser\stack10.h" />
+    <ClInclude Include="..\..\src\fmi\fmi10\shared\parser\xml_parser10.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\CCS20Data.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\CME20Data.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\fmi2.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\FMU20CoSimObject.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\FMU20MExchObject.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\FMU20Object.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\include\fmi2Functions.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\include\fmi2FunctionTypes.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\include\fmi2TypesPlatform.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\fmu20\XmlElement.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\fmu20\XmlParser.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\fmu20\XmlParserException.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\dict.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\encoding.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\entities.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\globals.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\hash.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\list.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\parser.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\relaxng.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\SAX.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\SAX2.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\threads.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\tree.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\valid.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xlink.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xmlautomata.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xmlerror.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xmlexports.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xmlIO.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xmlmemory.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xmlreader.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xmlregexp.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xmlschemas.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xmlstring.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\libxml\xmlversion.h" />
+    <ClInclude Include="..\..\src\fmi\fmi20\parser\XmlParserCApi.h" />
+    <ClInclude Include="..\..\src\fmi\FMUAbstract.h" />
+    <ClInclude Include="..\..\src\FMUWork.h" />
+    <ClInclude Include="..\..\src\libfmuwrapper.h" />
+    <ClInclude Include="..\..\src\libfmuwrapper_global.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

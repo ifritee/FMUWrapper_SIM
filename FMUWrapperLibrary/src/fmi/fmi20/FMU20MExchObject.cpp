@@ -177,14 +177,14 @@ namespace fmuw
 
   void* FMU20MExchObject::getFunctionAddress(const char* functionName)
   {
-#if WINDOWS
+#if _WINDOWS
     void* functionPointer = GetProcAddress(_ModelUnit_po->dllHandle, functionName);
 #else /* WINDOWS */
     void* functionPointer = dlsym(_ModelUnit_po->dllHandle, functionName);
 #endif /* WINDOWS */
     if (!functionPointer) {
-#if WINDOWS
-      throw std::runtime_error(std::string("warning: Function") + name + " not found in dll");
+#if _WINDOWS
+      throw std::runtime_error(std::string("warning: Function") + functionName + " not found in dll");
 #else /* WINDOWS */
       throw std::runtime_error(std::string("warning: Function") + functionName + " not found in dll! Code = " + dlerror());
 #endif /* WINDOWS */

@@ -20,7 +20,12 @@
 
 #ifdef STANDALONE_XML_PARSER
 #define logThis(n, ...) printf(__VA_ARGS__); printf("\n")
+#ifdef _WINDOWS
+#define checkStrdup(str) _strdup(str)
+#else
 #define checkStrdup(str) strdup(str)
+#endif
+
 #else
 #include "GlobalIncludes.h"
 #include "logging.h"  // logThis

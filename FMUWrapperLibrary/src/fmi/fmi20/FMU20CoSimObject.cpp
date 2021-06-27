@@ -46,7 +46,7 @@ namespace fmuw
   void FMU20CoSimObject::loadLibrary()
   {
 #if WINDOWS
-    HMODULE handle = LoadLibrary(dllPath);
+    HMODULE handle = LoadLibrary(_FilenameDLL_str.c_str());
 #else /* WINDOWS */
     HMODULE handle = dlopen(_FilenameDLL_str.c_str(), RTLD_LAZY);
 #endif /* WINDOWS */
@@ -183,7 +183,7 @@ namespace fmuw
 #endif /* WINDOWS */
     if (!functionPointer) {
 #if WINDOWS
-      throw std::runtime_error(std::string("warning: Function") + name + " not found in dll");
+      throw std::runtime_error(std::string("warning: Function") + functionName + " not found in dll");
 #else /* WINDOWS */
       throw std::runtime_error(std::string("warning: Function") + functionName + " not found in dll! Code = " + dlerror());
 #endif /* WINDOWS */

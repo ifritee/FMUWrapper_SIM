@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#ifdef WINDOWS
+#ifdef _WINDOWS
   #include <windows.h>
 #else
   #include <dlfcn.h>
@@ -51,7 +51,7 @@ namespace fmuw
   void FMU10MExchObject::loadLibrary()
   {
 #if WINDOWS
-    HANDLE handle = LoadLibrary(dllPath);
+    HANDLE handle = LoadLibrary(_FilenameDLL_str.c_str());
 #else /* WINDOWS */
     HANDLE handle = dlopen(_FilenameDLL_str.c_str(), RTLD_LAZY);
 #endif /* WINDOWS */

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#ifdef WINDOWS
+#ifdef _WINDOWS
   #include <windows.h>
 #else
   #include <dlfcn.h>
@@ -28,7 +28,7 @@ namespace fmuw
     if (_ModelData_po) {
       _ModelData_po->freeData();
     }
-#if WINDOWS
+#if _WINDOWS
     FreeLibrary(_ModelUnit_po->dllHandle);
 #else /* WINDOWS */
     dlclose(_ModelUnit_po->dllHandle);

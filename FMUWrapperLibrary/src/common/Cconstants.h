@@ -6,13 +6,12 @@
 #include "fmiModelTypes.h"
 #include "fmiFunctions.h"
 
-#if WINDOWS
+#if _WINDOWS
   #ifdef _WIN64
     #define DLL_DIR   "binaries\\win64\\"
   #else /* _WIN64 */
     #define DLL_DIR   "binaries\\win32\\"
   #endif /* _WIN64 */
-
   #define DLL_SUFFIX ".dll"
 #elif __APPLE__
   // Use these for platforms other than OpenModelica
@@ -26,7 +25,7 @@
     #define DLL_DIR   "binaries/linux32/"
   #endif /*__x86_64__*/
   #define DLL_SUFFIX ".so"
-#else
+#else 
   #error "OS type is not supported!!!"
 #endif
 
