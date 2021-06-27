@@ -1,9 +1,13 @@
 #pragma once
 
 #include "FMU10ObjectAbstract.h"
+#include "XmlParserCApi.h"
 
 namespace fmuw
 {
+
+  namespace fmi20 { struct FMU; class CCS20Data; }
+
   class FMU20CoSimObject : public FMU10ObjectAbstract
   {
   public:
@@ -34,6 +38,19 @@ namespace fmuw
 
   private:
     double _StepSize_d = 0.1; ///< @brief Размер одного шага
+    fmi20::FMU * _ModelUnit_po;  ///< @brief Указатель на модели
+    fmi20::CCS20Data * _ModelData_po = nullptr; ///< @brief Данные текущей модели
+
+
+    /**
+     * @brief Вывод данных о загружаемой модели
+     * @param md Дескриптор модели */
+    void printModelDescription(ModelDescription* md);
+    /**
+     * @brief getFunctionAddress Ищет адрес функции по имени
+     * @param functionName Имя функции
+     * @return Указатель на функцию */
+    void* getFunctionAddress(const char* functionName);
   };
 
 } // namespace fmuw

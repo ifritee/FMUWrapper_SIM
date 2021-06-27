@@ -14,7 +14,8 @@ int main(int argc, char *argv[])
 //  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/me/values.fmu";
 //  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/cs/bouncingBall.fmu";
 //    const char * fmu = "/home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_cs/bouncingBall.fmu";
-    const char * fmu = "/home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_me/bouncingBall.fmu";
+//    const char * fmu = "/home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_me/bouncingBall.fmu";
+    const char * fmu = "/home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_cs/bouncingBall.fmu";
 //    const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu20/me/values.fmu";
 
   int module = unzipFMU(fmu, ".");

@@ -9,7 +9,7 @@
 namespace fmuw::fmi20
 {
 
-  void fmuLogger(void *componentEnvironment, fmi2String instanceName, fmi2Status status, fmi2String category, fmi2String message, ...)
+  void fmu20meLogger(void *componentEnvironment, fmi2String instanceName, fmi2Status status, fmi2String category, fmi2String message, ...)
   {
 
   }
@@ -19,7 +19,7 @@ namespace fmuw::fmi20
   CME20Data::CME20Data(FMU *fmu, const std::string & path)
     : _Model_po(fmu)
     , _ModulePath_str(path)
-    , _Callbacks_po(new fmi2CallbackFunctions({fmuLogger, calloc, free, nullptr, fmu}))
+    , _Callbacks_po(new fmi2CallbackFunctions({fmu20meLogger, calloc, free, nullptr, fmu}))
   {
     _ModelID_str = getAttributeValue((Element *)(_Model_po->modelDescription), att_guid);
     _InstanceName_str = getAttributeValue((Element *)getModelExchange(_Model_po->modelDescription), att_modelIdentifier);

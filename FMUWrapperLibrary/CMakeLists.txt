@@ -27,6 +27,7 @@ set(SOURCE_FILES
   src/fmi/fmi20/FMU20MExchObject.cpp
   src/fmi/fmi20/FMU20CoSimObject.cpp
   src/fmi/fmi20/CME20Data.cpp
+  src/fmi/fmi20/CCS20Data.cpp
   src/fmi/fmi20/parser/XmlElement.cpp
   src/fmi/fmi20/parser/XmlParser.cpp
   src/fmi/fmi20/parser/XmlParserCApi.cpp
@@ -56,6 +57,7 @@ set(HEADER_FILES
   src/fmi/fmi20/FMU20MExchObject.h
   src/fmi/fmi20/FMU20CoSimObject.h
   src/fmi/fmi20/CME20Data.h
+  src/fmi/fmi20/CCS20Data.h
   src/fmi/fmi20/parser/XmlParserCApi.h
   src/fmi/fmi20/parser/fmu20/XmlElement.h
   src/fmi/fmi20/parser/fmu20/XmlParser.h
