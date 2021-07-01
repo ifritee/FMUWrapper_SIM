@@ -19,7 +19,7 @@
 #define TRUE 1
 #define FALSE 0
 #define min(a,b) (a>b ? b : a)
-#define HANDLE void *
+#define HMODULE void *
 /* See http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html */
 #include <dlfcn.h>
 #endif /* _MSC_VER */
@@ -208,7 +208,7 @@ namespace fmuw::fmi10
    * @brief Набор данных модели */
   struct FMU {
     ModelDescription* modelDescription; ///< @brief Дескриптор модели (структура данных)
-    HANDLE dllHandle; ///< @brief Дескриптор библиотеки
+    HMODULE dllHandle; ///< @brief Дескриптор библиотеки
     fGetModelTypesPlatform getModelTypesPlatform; ///< @brief Тип платформы для которой собрана модель
     fGetVersion getVersion; ///< @brief Возвращает версию FMI
     fInstantiateModel instantiateModel; ///< @brief Создает экземпляр модели

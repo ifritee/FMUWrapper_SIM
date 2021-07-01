@@ -19,7 +19,7 @@
 #define TRUE 1
 #define FALSE 0
 #define min(a,b) (a>b ? b : a)
-#define HANDLE void *
+#define HMODULE void *
   /* See http://www.yolinux.com/TUTORIALS/LibraryArchives-StaticAndDynamic.html */
 #include <dlfcn.h>
 #endif /* _MSC_VER */
@@ -65,7 +65,7 @@ namespace fmuw
 
     struct FMU {
       ModelDescription* modelDescription;
-      HANDLE dllHandle;
+      HMODULE dllHandle;
       fGetTypesPlatform getTypesPlatform;
       fGetVersion getVersion;
       fSetDebugLogging setDebugLogging;

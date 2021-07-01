@@ -51,9 +51,9 @@ namespace fmuw
   void FMU10CoSimObject::loadLibrary()
   {
 #if WINDOWS
-    HANDLE handle = LoadLibrary(dllPath);
+    HMODULE handle = LoadLibraryA(_FilenameDLL_str.c_str());
 #else /* WINDOWS */
-    HANDLE handle = dlopen(_FilenameDLL_str.c_str(), RTLD_LAZY);
+    HMODULE handle = dlopen(_FilenameDLL_str.c_str(), RTLD_LAZY);
 #endif /* WINDOWS */
     if (!handle) {
 #if WINDOWS

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <ios>
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <string.h>
 
 #define _Nullable
@@ -29,9 +29,10 @@ int unzipFMU(const char *file, const char *dst)
     last_error = buffer;
     return CODE_FAILED;
   }
-  std::string baseName = boost::filesystem::basename(file);
+  std::filesystem::path filePath(file);
+  std::string baseName = filePath.stem().u8string();
   std::string outDirectory = std::string(dst) + "/" + baseName;
-  if (boost::filesystem::create_directory(outDirectory) == false) {
+  if (std::filesystem::create_directory(outDirectory) == false) {
     last_error = "Do not create out directory";
     zip_close(zipStream);
     return CODE_FAILED;
@@ -41,7 +42,7 @@ int unzipFMU(const char *file, const char *dst)
       std::string name = outDirectory + "/" + zipStat.name;
       std::cout<<"FILE: "<<name<<std::endl;
       if (name[name.size() - 1] == '/') {
-        boost::filesystem::create_directory(name);
+        std::filesystem::create_directory(name);
       } else {
         zipFile = zip_fopen_index(zipStream, i, 0);
         if (zipFile == 0) {
@@ -81,7 +82,7 @@ int removeTmp(int number)
 {
   if (number < temp_data.size() && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
-    boost::filesystem::remove_all(work->fmuPath());
+    std::filesystem::remove_all(work->fmuPath());
     delete work;
     temp_data[number] = nullptr;
   }
