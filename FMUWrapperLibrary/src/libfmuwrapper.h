@@ -20,7 +20,7 @@ extern "C" {
    * @param file Имя файла с путём
    * @param dst Папка назначения (может быть tmp)
    * @return -1 - неудача, -2 - успех, но с предупреждением, >=0 - успех + номер текущей модели */
-  FMUWRAPPER_EXPORT int unzipFMU(const char * file, const char * dst);
+  FMUWRAPPER_EXPORT int createFMU(const char * path);
   /**
    * @brief removePath Удаляет папку с временными файлами FMU
    * @param number номер модели

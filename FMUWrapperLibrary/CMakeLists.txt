@@ -65,7 +65,6 @@ set(HEADER_FILES
   src/fmi/fmi20/include/fmi2Functions.h
   src/fmi/fmi20/include/fmi2FunctionTypes.h
   src/fmi/fmi20/include/fmi2TypesPlatform.h
-  third_party/libzip/lib/zip.h
   )
 
 include_directories(
@@ -100,16 +99,16 @@ ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
 ENDIF ()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
-target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/third_party/libzip/build/lib/libzip.a)
+#target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/third_party/libzip/build/lib/libzip.a)
 target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/third_party/libexpat/nix_64/libexpat.a)
 target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
 
 find_package(Threads REQUIRED)
 find_package(Boost 1.69 COMPONENTS program_options log log_setup REQUIRED)
-find_package(ZLIB)
+#find_package(ZLIB)
 find_package(LibXml2 REQUIRED)
 
-target_link_libraries(${PROJECT_NAME} ZLIB::ZLIB)
+#target_link_libraries(${PROJECT_NAME} ZLIB::ZLIB)
 target_link_libraries(${PROJECT_NAME} ${LIBXML2_LIBRARIES})
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
