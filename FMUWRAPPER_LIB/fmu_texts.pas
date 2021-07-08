@@ -13,11 +13,11 @@ const
 
   {$IFNDEF ENG}
 
-  txtCom_er_NoInPrefix       = 'Ошибка инициализации блока: не заданы значения в массиве InPrefix для префикса приёма данных';
+  txtCom_er_Unzip       = 'Ошибка распаковки модели FMU';
 
   {$ELSE}
 
-  txtCom_er_NoInPrefix       = 'Block initialization error: no values were specified in the InPrefix array for the data receive prefix';
+  txtCom_er_Unzip       = 'Unzip FMU file is failed';
 
   {$ENDIF}
 

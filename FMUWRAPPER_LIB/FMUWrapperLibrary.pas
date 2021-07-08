@@ -36,7 +36,7 @@ type
    // @brief removePath Удаляет папку с временными файлами FMU
    // @param number номер модели
    // @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением
-  function removeTmp(number : Integer) : Integer; cdecl; external FMULIB_DLL;
+  function freeFMU(number : Integer) : Integer; cdecl; external FMULIB_DLL;
 
    // @brief lastError Записываает последнюю ошибку
    // @param error указатель на массив чаров для записи текста ошибки

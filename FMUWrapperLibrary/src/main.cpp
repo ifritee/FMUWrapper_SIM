@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     // 7. Завершение работы с моделью
   }
 
-  if ( removeTmp(module) < CODE_OK) {
+  if ( freeFMU(module) < CODE_OK) {
     char error_buffer[1024] = {0};
     lastError(error_buffer, sizeof(error_buffer));
     std::cerr<<error_buffer<<std::endl;

@@ -22,10 +22,10 @@ extern "C" {
    * @return -1 - неудача, -2 - успех, но с предупреждением, >=0 - успех + номер текущей модели */
   FMUWRAPPER_EXPORT int createFMU(const char * path);
   /**
-   * @brief removePath Удаляет папку с временными файлами FMU
+   * @brief freeFMU Удаляет FMU, освобождет память
    * @param number номер модели
    * @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
-  FMUWRAPPER_EXPORT int removeTmp(int number);
+  FMUWRAPPER_EXPORT int freeFMU(int number);
   /**
    * @brief lastError Записываает последнюю ошибку
    * @param error указатель на массив чаров для записи текста ошибки

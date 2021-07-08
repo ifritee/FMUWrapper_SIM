@@ -18,7 +18,7 @@ uses
    , DataTypes
    , abstract_im_interface
    , RunObjts
-   , urs232
+   , System.Zip
    ;
 
 type
@@ -43,8 +43,12 @@ type
   strict private
 
     //*****  Редактируемые параметры блока *****
+    m_nextTime: double; /// Целевое время
+    m_modelIndex: Integer; /// Индекс модели
+    m_fileName: String; /// Имя файла с моделью FMU
+    m_isRecalc: Boolean; /// Состояние пересборки модели
+    m_saveRecalc: Boolean; /// Сохраненное состояние пересборки модели
 
-    m_nextTime:    double; /// Целевое время
 
   const
     // Тип создаваемых портов (под математическую связь)
@@ -61,6 +65,7 @@ uses
    , IntArrays
    , RealArrays
    , DataObjts
+   , FMUWrapperLibrary
    ;
 
 
@@ -71,11 +76,17 @@ constructor  TFMUDataBlock.Create;
 begin
   inherited;
   m_nextTime := 0;
+  m_modelIndex := -1;
+  m_isRecalc := False;
+  m_saveRecalc := m_isRecalc;
 end;
 
 destructor   TFMUDataBlock.Destroy;
 begin
   inherited;
+  if m_modelIndex <> -1 then begin
+    freeFMU(m_modelIndex);
+  end;
 end;
 
 function     TFMUDataBlock.InfoFunc(Action: integer;aParameter: NativeInt):NativeInt;
@@ -86,7 +97,7 @@ begin
       Result := t_fun;
     end;
     i_GetInit: begin
-                   //По умолчанию блок - приоритетный, т.к. он полностью асинхронный
+      //По умолчанию блок - приоритетный, т.к. он полностью асинхронный
       Result := t_src;
     end;
     i_GetCount: begin
@@ -117,11 +128,19 @@ begin
   end;
 end;
 
-function     TFMUDataBlock.GetParamID(const ParamName:string;var DataType:TDataType;var IsConst: boolean):NativeInt;
+function     TFMUDataBlock.GetParamID(const ParamName:string; var DataType:TDataType; var IsConst: boolean) : NativeInt;
 begin
   Result:=inherited GetParamId(ParamName,DataType,IsConst);
   if Result = -1 then begin
-
+    if StrEqu(ParamName,'file_name') then begin
+      Result:=NativeInt(@m_fileName);
+      DataType:=dtString;
+      Exit;
+    end else if StrEqu(ParamName,'recalculate') then begin
+      Result:=NativeInt(@m_isRecalc);
+      DataType:=dtDiscreteBool;
+      Exit;
+    end
   end;
 end;
 
@@ -140,8 +159,29 @@ end;
 
 
 procedure    TFMUDataBlock.EditFunc;
+var
+  zipFile : TZipFile;
 begin
+  if (m_isRecalc <> m_saveRecalc) AND (FileExists(m_fileName)) then begin
+    m_saveRecalc := m_isRecalc;
+    // 1. Распаковываем файл во временную папку
+    zipFile :=  TZipFile.Create;
+    try
+      zipFile.Open(m_fileName, zmRead);
+      zipFile.ExtractAll('tmp');
+      zipFile.Close;
+    except
+      zipFile.Free;
+      ErrorEvent(txtCom_er_Unzip, msError, VisualObject);
+      Exit;
+    end;
+    zipFile.Free;
+    if m_modelIndex <> -1 then begin
+      freeFMU(m_modelIndex);
+    end;
+    m_modelIndex := createFMU('tmp');
 
+  end;
 end;
 
 end.

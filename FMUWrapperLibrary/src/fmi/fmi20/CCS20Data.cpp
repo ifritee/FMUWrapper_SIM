@@ -57,7 +57,8 @@ namespace fmuw
     {
       _StartTime_d = tStart;
       _EndTime_d = tEnd;
-      fmi2Boolean tolerance, toleranceDefined = fmi2False;  // true if model description define tolerance
+      fmi2Boolean toleranceDefined = fmi2False;  // true if model description define tolerance
+      fmi2Real tolerance = 0.0;
       Element* defaultExp = getDefaultExperiment(_Model_po->modelDescription);
       ValueStatus vs = valueMissing;
       if (defaultExp) {

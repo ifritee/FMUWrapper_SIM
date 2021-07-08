@@ -22,11 +22,11 @@ int createFMU(const char * path)
   return temp_data.size() - 1;
 }
 
-int removeTmp(int number)
+int freeFMU(int number)
 {
   if (number < temp_data.size() && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
-    std::filesystem::remove_all(work->fmuPath());
+    //std::filesystem::remove_all(work->fmuPath());
     delete work;
     temp_data[number] = nullptr;
   }
