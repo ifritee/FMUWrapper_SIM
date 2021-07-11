@@ -123,13 +123,15 @@ begin
 
   case Action of
     f_Stop: begin
-
+      if m_modelIndex >= 0 then begin
+        freeFMU(m_modelIndex);
+        m_modelIndex := -1;
+      end;
     end;
     f_InitObjects: begin
       if m_modelIndex = -1 then begin
         m_modelIndex := createFMU(TEMP_PATH);
         parsing(m_modelIndex);
-        initialize(m_modelIndex, m_modelingTime, m_modelingStep);
       end;
     end;
     f_InitState: begin
@@ -138,6 +140,7 @@ begin
         Result := r_Fail;
         Exit;
       end;
+      initialize(m_modelIndex, m_modelingTime, m_modelingStep);
       m_outPorts := outputsQty(m_modelIndex);
       m_inPorts := inputsQty(m_modelIndex);
       SetLength(m_outPortsType, m_outPorts);
@@ -284,6 +287,8 @@ begin
         SetCondPortCount(VisualObject, 1,  pmInput,  portType, sdLeft, buffer);
       end;
     end;
+    freeFMU(m_modelIndex);
+    m_modelIndex := -1;
   end;
 end;
 

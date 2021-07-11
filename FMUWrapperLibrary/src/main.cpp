@@ -51,7 +51,31 @@ int main(int argc, char *argv[])
 
     // 2. Задание начальных значений свойств модели
     // 3. Цикл по шагам симуляции модели
-    for (int i = 0; i < 2000; ++i) {
+    for (int i = 0; i < 10; ++i) {
+      if ( step(module) < CODE_OK) {
+
+        // 4. Задание очередных значений свойств модели
+        // 5. Шаг
+        // 6. Считывание состояния индикаторов модели
+      }
+      for(auto p : outVars) {
+        switch (p.second) {
+        case fmuw::FTReal_en: {  // double
+          double var = getDouble(module, p.first.c_str());
+          if (p.first == "h") {
+            std::cout<<p.first<<" = "<<var<<std::endl;
+          }
+        } break;
+        default:
+          break;
+        }
+      }
+    }
+    std::cout<<std::endl;
+    if ( initialize(module, time_end, oneStep) < CODE_OK) {
+
+    }
+    for (int i = 0; i < 10; ++i) {
       if ( step(module) < CODE_OK) {
 
         // 4. Задание очередных значений свойств модели
