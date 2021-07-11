@@ -19,6 +19,7 @@ uses
    , abstract_im_interface
    , RunObjts
    , System.Zip
+   , IOUtils
    ;
 
 type
@@ -48,12 +49,18 @@ type
     m_fileName: String; /// Имя файла с моделью FMU
     m_isRecalc: Boolean; /// Состояние пересборки модели
     m_saveRecalc: Boolean; /// Сохраненное состояние пересборки модели
-    m_modelingTime: Real; /// Время моделирования
-    m_modelingStep: Real; /// Шаг моделирования
+    m_modelingTime: Double; /// Время моделирования
+    m_modelingStep: Double; /// Шаг моделирования
+
+    //***** Местные свойства ********
+    m_outPorts, m_inPorts : Integer;
+    m_outPortsType, m_inPortsType : Array of Integer;
+    m_outPortsName, m_inPortsName : Array of AnsiString;
 
   const
     // Тип создаваемых портов (под математическую связь)
     PortType = 0;
+    TEMP_PATH = 'tmp';
 
   end;
 
@@ -68,8 +75,6 @@ uses
    , DataObjts
    , FMUWrapperLibrary
    ;
-
-
 
 //*****  Внешние методы *****
 
@@ -109,7 +114,10 @@ begin
   end;
 end;
 
-function     TFMUDataBlock.RunFunc;
+function TFMUDataBlock.RunFunc;
+var
+  retCode, I, ttype : Integer;
+  buffer : Array [0..256] of AnsiChar;
 begin
  Result := r_Success;
 
@@ -118,13 +126,51 @@ begin
 
     end;
     f_InitObjects: begin
-
+      if m_modelIndex = -1 then begin
+        m_modelIndex := createFMU(TEMP_PATH);
+        parsing(m_modelIndex);
+        initialize(m_modelIndex, m_modelingTime, m_modelingStep);
+      end;
     end;
     f_InitState: begin
-
+      if m_modelIndex < 0 then begin // Проверка на существования модели
+        ErrorEvent(txtFMU_er_Create, msError, VisualObject);
+        Result := r_Fail;
+        Exit;
+      end;
+      m_outPorts := outputsQty(m_modelIndex);
+      m_inPorts := inputsQty(m_modelIndex);
+      SetLength(m_outPortsType, m_outPorts);
+      SetLength(m_inPortsType, m_inPorts);
+      SetLength(m_outPortsName, m_outPorts);
+      SetLength(m_inPortsName, m_inPorts);
+      for I := 0 to m_outPorts - 1 do begin
+        retCode := outputVar(m_modelIndex, I, buffer, 256, ttype);
+        if (retCode = 0) then begin
+          m_outPortsType[I] := ttype;
+          m_outPortsName[I] := buffer;
+        end;
+      end;
+      for I := 0 to m_inPorts - 1 do begin
+      retCode := inputVar(m_modelIndex, I, buffer, 256, ttype);
+        if (retCode = 0) then begin
+          m_inPortsType[I] := ttype;
+          m_inPortsName[I] := buffer;
+        end;
+      end;
     end;
     f_GoodStep: begin
-
+      if m_modelIndex < 0 then begin // Проверка на существования модели
+        ErrorEvent(txtFMU_er_Create, msError, VisualObject);
+        Result := r_Fail;
+        Exit;
+      end;
+      step(m_modelIndex);
+      for I := 0 to cY.Count - 1 do begin
+        if (m_outPortsType[I] = 0) then begin // Для DOUBLE
+          Y[I].Arr^[0] := getDouble(m_modelIndex, PAnsiChar(m_outPortsName[I]));
+        end;
+      end;
     end;
   end;
 end;
@@ -153,7 +199,7 @@ begin
   end;
 end;
 
-procedure    TFMUDataBlock.RestartSave(Stream: TStream);
+procedure TFMUDataBlock.RestartSave(Stream: TStream);
 begin
   inherited;
   Stream.Write(m_nextTime,SizeOf(double));
@@ -170,8 +216,9 @@ end;
 procedure TFMUDataBlock.EditFunc;
 var
   zipFile : TZipFile;
-  outPorts, inPorts, retCode : Integer;
+  outPorts, inPorts, retCode, I, ttype : Integer;
   ExitWithInfo: TFunc<Integer>;   /// Информация при выходе с ошибкой
+  buffer : Array [0..256] of AnsiChar;
 begin
   //------------------------------------
   ExitWithInfo := function() : Integer
@@ -184,16 +231,17 @@ begin
   //------------------------------------
   if (m_isRecalc <> m_saveRecalc) AND (FileExists(m_fileName)) then begin
     m_saveRecalc := m_isRecalc;
-
+    // 0. Удалим временную папку и очистим модель
     if m_modelIndex <> -1 then begin
       freeFMU(m_modelIndex);
       m_modelIndex := -1;
     end;
+    TDirectory.Delete(TEMP_PATH, True);
     // 1. Распаковываем файл во временную папку
     zipFile :=  TZipFile.Create;
     try
       zipFile.Open(m_fileName, zmRead);
-      zipFile.ExtractAll('tmp');
+      zipFile.ExtractAll(TEMP_PATH);
       zipFile.Close;
     except
       zipFile.Free;
@@ -201,12 +249,13 @@ begin
       Exit;
     end;
     zipFile.Free;
-    m_modelIndex := createFMU('tmp');
+    // 3. Создаем модель
+    m_modelIndex := createFMU(TEMP_PATH);
     if (m_modelIndex < 0 ) then begin
       ExitWithInfo();
       Exit;
     end;
-
+    // 4. Разбираем файл дескриптора
     retCode := parsing(m_modelIndex);
     if (retCode = -1) then begin
       ExitWithInfo();
@@ -219,11 +268,22 @@ begin
       Exit;
     end;
     //----- Очистим все порты -----
-    SetPortCount(VisualObject, 0, pmOutput, 0, sdRight);
-    SetPortCount(VisualObject, 0, pmInput, 0, sdLeft);
     outPorts := outputsQty(m_modelIndex);
-
-
+    inPorts := inputsQty(m_modelIndex);
+    SetPortCount(VisualObject, outPorts, pmOutput, 0, sdRight);
+    SetPortCount(VisualObject, inPorts, pmInput, 0, sdLeft);
+    for I := 0 to outPorts - 1 do begin
+      retCode := outputVar(m_modelIndex, I, buffer, 256, ttype);
+      if (retCode = 0) then begin
+        SetCondPortCount(VisualObject, 1,  pmOutput,  portType, sdRight, buffer);
+      end;
+    end;
+    for I := 0 to inPorts - 1 do begin
+      retCode := inputVar(m_modelIndex, I, buffer, 256, ttype);
+      if (retCode = 0) then begin
+        SetCondPortCount(VisualObject, 1,  pmInput,  portType, sdLeft, buffer);
+      end;
+    end;
   end;
 end;
 
