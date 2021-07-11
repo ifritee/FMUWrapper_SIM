@@ -34,7 +34,7 @@ namespace fmuw
     struct FMU {
       ModelDescription* modelDescription;
 
-      HMODULE dllHandle; // fmu.dll handle
+      HMODULE dllHandle = nullptr; // fmu.dll handle
       /***************************************************
         Common Functions
         ****************************************************/

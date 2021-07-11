@@ -65,7 +65,7 @@ namespace fmuw
 
     struct FMU {
       ModelDescription* modelDescription;
-      HMODULE dllHandle;
+      HMODULE dllHandle = nullptr;
       fGetTypesPlatform getTypesPlatform;
       fGetVersion getVersion;
       fSetDebugLogging setDebugLogging;

@@ -101,6 +101,7 @@ Demo/verilator.zip
 Demo/D*/
 build-*/
 packages/
+tmp/
 
 *.pdf
 *.docx

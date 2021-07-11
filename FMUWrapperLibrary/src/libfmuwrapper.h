@@ -51,6 +51,11 @@ extern "C" {
    * @return Количество выходных переменных или -1, если ошибка */
   FMUWRAPPER_EXPORT int outputsQty(int number);
   /**
+   * @brief inputsQty Возвращает количество входных переменных
+   * @param number номер модели
+   * @return Количество выходных переменных или -1, если ошибка */
+  FMUWRAPPER_EXPORT int inputsQty(int number);
+  /**
    * @brief outputVar Устанавливает имя и тип переменной по индексу
    * @param number номер модели
    * @param index индект переменной
@@ -59,6 +64,15 @@ extern "C" {
    * @param type номер типа ( в нумерации fmu sdk)
    * @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
   FMUWRAPPER_EXPORT int outputVar(int number, int index, char * nameBuffer, int length, int & type);
+  /**
+   * @brief inputVar Устанавливает имя и тип переменной по индексу
+   * @param number номер модели
+   * @param index индект переменной
+   * @param nameBuffer Буфер для записи имени
+   * @param length размер буфера
+   * @param type номер типа ( в нумерации fmu sdk)
+   * @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
+  FMUWRAPPER_EXPORT int inputVar(int number, int index, char * nameBuffer, int length, int & type);
   /**
    * @brief step Шаг расчета модели
    * @param number номер модели

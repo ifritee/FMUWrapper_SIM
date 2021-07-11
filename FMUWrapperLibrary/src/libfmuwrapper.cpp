@@ -47,8 +47,14 @@ int parsing(int number)
 {
   if (number < temp_data.size() && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
-    if ( work->DescriptionRead_b() == false) {
-      last_error = work->lastError();
+    try {
+      if (work->DescriptionRead_b() == false) {
+        last_error = work->lastError();
+        return CODE_FAILED;
+      }
+    }
+    catch (std::exception& e) {
+      last_error = e.what();
       return CODE_FAILED;
     }
   }
@@ -83,6 +89,20 @@ int outputsQty(int number)
   return 0;
 }
 
+int inputsQty(int number)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      return work->inputsQty();
+    } catch(...) {
+      last_error = work->lastError();
+      return -1;
+    }
+  }
+  return 0;
+}
+
 int step(int number)
 {
   if (number < temp_data.size() && temp_data[number] != nullptr) {
@@ -97,14 +117,30 @@ int step(int number)
   return CODE_OK;
 }
 
-
-
 int outputVar(int number, int index, char *nameBuffer, int length, int &type)
 {
   if (number < temp_data.size() && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       std::string name = work->outputVar(index, type);
+      if (name.size() > length) {
+        return CODE_FAILED;
+      }
+      strcpy(nameBuffer, name.c_str());
+    } catch(...) {
+      last_error = work->lastError();
+      return CODE_FAILED;
+    }
+  }
+  return CODE_OK;
+}
+
+int inputVar(int number, int index, char *nameBuffer, int length, int &type)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      std::string name = work->inputVar(index, type);
       if (name.size() > length) {
         return CODE_FAILED;
       }

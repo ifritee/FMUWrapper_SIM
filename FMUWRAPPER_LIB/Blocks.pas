@@ -48,7 +48,8 @@ type
     m_fileName: String; /// Имя файла с моделью FMU
     m_isRecalc: Boolean; /// Состояние пересборки модели
     m_saveRecalc: Boolean; /// Сохраненное состояние пересборки модели
-
+    m_modelingTime: Real; /// Время моделирования
+    m_modelingStep: Real; /// Шаг моделирования
 
   const
     // Тип создаваемых портов (под математическую связь)
@@ -138,7 +139,15 @@ begin
       Exit;
     end else if StrEqu(ParamName,'recalculate') then begin
       Result:=NativeInt(@m_isRecalc);
-      DataType:=dtDiscreteBool;
+      DataType:=dtBool;
+      Exit;
+    end else if StrEqu(ParamName,'modeling_time') then begin
+      Result:=NativeInt(@m_modelingTime);
+      DataType:=dtDouble;
+      Exit;
+    end else if StrEqu(ParamName,'step') then begin
+      Result:=NativeInt(@m_modelingStep);
+      DataType:=dtDouble;
       Exit;
     end
   end;
@@ -158,12 +167,28 @@ begin
 end;
 
 
-procedure    TFMUDataBlock.EditFunc;
+procedure TFMUDataBlock.EditFunc;
 var
   zipFile : TZipFile;
+  outPorts, inPorts, retCode : Integer;
+  ExitWithInfo: TFunc<Integer>;   /// Информация при выходе с ошибкой
 begin
+  //------------------------------------
+  ExitWithInfo := function() : Integer
+  begin
+    Result:= 0;
+    ErrorEvent(txtFMU_er_Create, msError, VisualObject);
+    freeFMU(m_modelIndex);
+    m_modelIndex := -1;
+  end;
+  //------------------------------------
   if (m_isRecalc <> m_saveRecalc) AND (FileExists(m_fileName)) then begin
     m_saveRecalc := m_isRecalc;
+
+    if m_modelIndex <> -1 then begin
+      freeFMU(m_modelIndex);
+      m_modelIndex := -1;
+    end;
     // 1. Распаковываем файл во временную папку
     zipFile :=  TZipFile.Create;
     try
@@ -176,10 +201,28 @@ begin
       Exit;
     end;
     zipFile.Free;
-    if m_modelIndex <> -1 then begin
-      freeFMU(m_modelIndex);
-    end;
     m_modelIndex := createFMU('tmp');
+    if (m_modelIndex < 0 ) then begin
+      ExitWithInfo();
+      Exit;
+    end;
+
+    retCode := parsing(m_modelIndex);
+    if (retCode = -1) then begin
+      ExitWithInfo();
+      Exit;
+    end;
+
+    retCode := initialize(m_modelIndex, m_modelingTime, m_modelingStep);
+    if (retCode = -1) then begin
+      ExitWithInfo();
+      Exit;
+    end;
+    //----- Очистим все порты -----
+    SetPortCount(VisualObject, 0, pmOutput, 0, sdRight);
+    SetPortCount(VisualObject, 0, pmInput, 0, sdLeft);
+    outPorts := outputsQty(m_modelIndex);
+
 
   end;
 end;

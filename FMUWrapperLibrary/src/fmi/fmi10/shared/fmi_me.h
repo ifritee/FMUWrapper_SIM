@@ -208,7 +208,7 @@ namespace fmuw::fmi10
    * @brief Набор данных модели */
   struct FMU {
     ModelDescription* modelDescription; ///< @brief Дескриптор модели (структура данных)
-    HMODULE dllHandle; ///< @brief Дескриптор библиотеки
+    HMODULE dllHandle = nullptr; ///< @brief Дескриптор библиотеки
     fGetModelTypesPlatform getModelTypesPlatform; ///< @brief Тип платформы для которой собрана модель
     fGetVersion getVersion; ///< @brief Возвращает версию FMI
     fInstantiateModel instantiateModel; ///< @brief Создает экземпляр модели

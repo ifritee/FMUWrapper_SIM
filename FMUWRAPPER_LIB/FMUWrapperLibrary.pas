@@ -53,12 +53,17 @@ type
    // @param entTime Время окончания моделирования
    // @param stepSize Размер шага
    // @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением 
-  function initialize(number : Integer; entTime : Real; stepSize : Real) : Integer;  external FMULIB_DLL;
+  function initialize(number : Integer; endTime : Real; stepSize : Real) : Integer;  external FMULIB_DLL;
 
    // @brief outputsQty Возвращает количество выходных переменных
    // @param number номер модели
    // @return Количество выходных переменных или -1, если ошибка
   function outputsQty(number : Integer) : Integer; external FMULIB_DLL;
+
+   // @brief inputsQty Возвращает количество входных переменных
+   // @param number номер модели
+   // @return Количество выходных переменных или -1, если ошибка
+  function inputsQty(number : Integer) : Integer; external FMULIB_DLL;
 
    // @brief outputVar Устанавливает имя и тип переменной по индексу
    // @param number номер модели
@@ -68,6 +73,15 @@ type
    // @param type номер типа ( в нумерации fmu sdk)
    // @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
   function outputVar(number : Integer; index : Integer; nameBuffer : PAnsiChar; length : Integer; var ttype : Integer) : Integer; external FMULIB_DLL;
+
+   // @brief inputVar Устанавливает имя и тип переменной по индексу
+   // @param number номер модели
+   // @param index индект переменной
+   // @param nameBuffer Буфер для записи имени
+   // @param length размер буфера
+   // @param type номер типа ( в нумерации fmu sdk)
+   // @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
+  function inputVar(number : Integer; index : Integer; nameBuffer : PAnsiChar; length : Integer; var ttype : Integer) : Integer; external FMULIB_DLL;
 
    // @brief step Шаг расчета модели
    // @param number номер модели

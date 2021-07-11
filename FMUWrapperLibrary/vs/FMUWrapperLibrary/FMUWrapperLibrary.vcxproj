@@ -139,6 +139,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
       <AdditionalDependencies>$(ProjectDir)/../libs/win64/libexpatMT.lib;$(ProjectDir)/../libs/win64/libxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>C:\SimInTech64\bin\$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
