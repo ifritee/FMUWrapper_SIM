@@ -908,7 +908,7 @@ namespace fmuw
         int n = fread(text, sizeof(char), XMLBUFSIZE, file);
         if (n != XMLBUFSIZE) done = 1;
         if (!XML_Parse(parser, text, n, done)) {
-          logThis(ERROR_ERROR, "Parse error in file %s at line %d:\n%s\n",
+          logThis(ERROR_ERROR, "Parse error in file %s at line %lu:\n%s\n",
             xmlPath,
             XML_GetCurrentLineNumber(parser),
             XML_ErrorString(XML_GetErrorCode(parser)));

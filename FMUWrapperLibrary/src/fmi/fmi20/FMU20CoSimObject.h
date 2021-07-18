@@ -35,6 +35,14 @@ namespace fmuw
     virtual int intValue(const std::string &) override;
     /** @brief Возвращает значение типа STRING по имени */
     virtual std::string strValue(const std::string &) override;
+    /** @brief Задает значение */
+    virtual void setDoubleValue(const std::string &, double) override;
+    /** @brief Задает значение */
+    virtual void setBoolValue(const std::string &, bool) override;
+    /** @brief Задает значение */
+    virtual void setIntValue(const std::string &, int) override;
+    /** @brief Задает значение */
+    virtual void setStringValue(const std::string &, const std::string &) override;
 
   private:
     double _StepSize_d = 0.1; ///< @brief Размер одного шага

@@ -137,6 +137,28 @@ namespace fmuw
     return _ModelData_po->stringVar(name);
   }
 
+  void FMU10CoSimObject::setDoubleValue(const std::string & name, double value)
+  {
+    _ModelData_po->setVarData(name, &value);
+  }
+
+  void FMU10CoSimObject::setBoolValue(const std::string & name, bool value)
+  {
+    char temp = static_cast<char>(value);
+    _ModelData_po->setVarData(name, &temp);
+  }
+
+  void FMU10CoSimObject::setIntValue(const std::string & name, int value)
+  {
+    _ModelData_po->setVarData(name, &value);
+  }
+
+  void FMU10CoSimObject::setStringValue(const std::string & name, const std::string & value)
+  {
+    const char * strings[] = {value.c_str()};
+    _ModelData_po->setVarData(name, strings);
+  }
+
   void FMU10CoSimObject::printModelDescription(fmi10::ModelDescription *md)
   {
     fmi10::Element* e = (fmi10::Element*)md;

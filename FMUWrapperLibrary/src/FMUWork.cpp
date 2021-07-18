@@ -142,5 +142,25 @@ namespace fmuw
     return m_fmuObject->strValue(name);
   }
 
+  void FMUWork::setDoubleValue(const char *name, double value)
+  {
+    m_fmuObject->setDoubleValue(name, value);
+  }
+
+  void FMUWork::setBoolValue(const char *name, bool value)
+  {
+    m_fmuObject->setBoolValue(name, value);
+  }
+
+  void FMUWork::setIntValue(const char *name, int value)
+  {
+    m_fmuObject->setIntValue(name, value);
+  }
+
+  void FMUWork::setStringValue(const char *name, std::string value)
+  {
+    m_fmuObject->setStringValue(name, value);
+  }
+
 } // namespace fmuw
 

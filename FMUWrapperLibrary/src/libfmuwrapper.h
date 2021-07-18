@@ -104,6 +104,30 @@ extern "C" {
    * @param length Длина буфера
    * @return Размер строки */
   FMUWRAPPER_EXPORT int getString(int number, const char * name, char * buffer, int length);
+  /**
+   * @brief setDouble Возвращает значение типа DOUBLE по имени
+   * @param number номер модели
+   * @param name Имя переменной
+   * @param value Значение*/
+  FMUWRAPPER_EXPORT void setDouble(int number, const char * name, double value);
+  /**
+   * @brief setBool Возвращает значение типа Bool по имени
+   * @param number номер модели
+   * @param name Имя переменной
+   * * @param value Значение*/
+  FMUWRAPPER_EXPORT void setBool(int number, const char * name, bool value);
+  /**
+   * @brief setBool Возвращает значение типа Int по имени
+   * @param number номер модели
+   * @param name Имя переменной
+   * @param value Значение*/
+  FMUWRAPPER_EXPORT void setInt(int number, const char * name, int value);
+  /**
+   * @brief setBool Возвращает значение типа String по имени
+   * @param number номер модели
+   * @param name Имя переменной
+   * @param value строка*/
+  FMUWRAPPER_EXPORT void setString(int number, const char * name, char * value);
 
 }
 

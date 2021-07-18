@@ -40,6 +40,14 @@ namespace fmuw
     virtual int intValue(const std::string &) override;
     /** @brief Возвращает значение типа STRING по имени */
     virtual std::string strValue(const std::string &) override;
+    /** @brief Устанавливает значение типа DOUBLE по имени */
+    virtual void setDoubleValue(const std::string &, double) override;
+    /** @brief Устанавливает значение типа BOOL по имени */
+    virtual void setBoolValue(const std::string &, bool) override;
+    /** @brief Устанавливает значение типа INT по имени */
+    virtual void setIntValue(const std::string &, int) override;
+    /** @brief Устанавливает значение типа STRING по имени */
+    virtual void setStringValue(const std::string &, const std::string &) override;
 
   private:
     FMU10ObjectAbstract * _Model_po = nullptr; ///< @brief Модель FMU

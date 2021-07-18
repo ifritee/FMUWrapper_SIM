@@ -17,6 +17,7 @@ uses
      Classes
    , DataTypes
    , abstract_im_interface
+   , InterfaceUnit
    , RunObjts
    , System.Zip
    , IOUtils
@@ -41,6 +42,8 @@ type
                           SetCondPortCount:TSetCondPortCount;
                           ExecutePropScript:TExecutePropScript
                           );override;
+
+
   strict private
 
     //*****  Редактируемые параметры блока *****
@@ -56,6 +59,12 @@ type
     m_outPorts, m_inPorts : Integer;
     m_outPortsType, m_inPortsType : Array of Integer;
     m_outPortsName, m_inPortsName : Array of AnsiString;
+
+    //***** Локальные методы *******
+    // Распаковка модели
+    function unzipModel(var error : String) : Boolean;
+    // Создание новой модели
+    function createModel(var error : String) : Boolean;
 
   const
     // Тип создаваемых портов (под математическую связь)
@@ -96,6 +105,10 @@ begin
 end;
 
 function     TFMUDataBlock.InfoFunc(Action: integer;aParameter: NativeInt):NativeInt;
+var
+  elementInfo : TElementInfo;
+  basePort : TBasePort;
+  I, outputCounter : Integer;
 begin
   Result := t_none;
   case Action of
@@ -105,9 +118,19 @@ begin
     i_GetInit: begin
       //По умолчанию блок - приоритетный, т.к. он полностью асинхронный
       Result := t_src;
+
     end;
     i_GetCount: begin
-
+      outputCounter := 0;
+      DllInfo.Main.GetElementInfo(VisualObject, elementInfo);
+      for I := 0 to elementInfo.GetPortCount - 1 do begin
+        basePort := elementInfo.GetPort(I);
+        if basePort.Mode = pmOutput then begin
+          // Тут нужно обработать задание размера выходного порта
+          cY[outputCounter] := 1;
+          inc(outputCounter);
+        end;
+      end;
     end;
   else
     Result:=inherited InfoFunc(Action,aParameter);
@@ -118,6 +141,7 @@ function TFMUDataBlock.RunFunc;
 var
   retCode, I, ttype : Integer;
   buffer : Array [0..256] of AnsiChar;
+  error : String;
 begin
  Result := r_Success;
 
@@ -129,18 +153,21 @@ begin
       end;
     end;
     f_InitObjects: begin
-      if m_modelIndex = -1 then begin
-        m_modelIndex := createFMU(TEMP_PATH);
-        parsing(m_modelIndex);
+      if NOT DirectoryExists(TEMP_PATH) then  begin // Для ускорения
+        if (unzipModel(error) = False ) then begin
+          ErrorEvent(error, msError, VisualObject);
+          Result := r_Fail;
+          Exit;
+        end;
       end;
     end;
     f_InitState: begin
-      if m_modelIndex < 0 then begin // Проверка на существования модели
-        ErrorEvent(txtFMU_er_Create, msError, VisualObject);
+      if (createModel(error) = False ) then begin
+        ErrorEvent(error, msError, VisualObject);
         Result := r_Fail;
         Exit;
       end;
-      initialize(m_modelIndex, m_modelingTime, m_modelingStep);
+
       m_outPorts := outputsQty(m_modelIndex);
       m_inPorts := inputsQty(m_modelIndex);
       SetLength(m_outPortsType, m_outPorts);
@@ -184,7 +211,7 @@ begin
   if Result = -1 then begin
     if StrEqu(ParamName,'file_name') then begin
       Result:=NativeInt(@m_fileName);
-      DataType:=dtString;
+      DataType:=dtFileName;
       Exit;
     end else if StrEqu(ParamName,'recalculate') then begin
       Result:=NativeInt(@m_isRecalc);
@@ -218,16 +245,16 @@ end;
 
 procedure TFMUDataBlock.EditFunc;
 var
-  zipFile : TZipFile;
+  locError : String;
   outPorts, inPorts, retCode, I, ttype : Integer;
-  ExitWithInfo: TFunc<Integer>;   /// Информация при выходе с ошибкой
+  ExitWithInfo: TFunc<String, Integer>;   /// Информация при выходе с ошибкой
   buffer : Array [0..256] of AnsiChar;
 begin
   //------------------------------------
-  ExitWithInfo := function() : Integer
+  ExitWithInfo := function(error: String) : Integer
   begin
     Result:= 0;
-    ErrorEvent(txtFMU_er_Create, msError, VisualObject);
+    ErrorEvent(error, msError, VisualObject);
     freeFMU(m_modelIndex);
     m_modelIndex := -1;
   end;
@@ -239,7 +266,44 @@ begin
       freeFMU(m_modelIndex);
       m_modelIndex := -1;
     end;
-    TDirectory.Delete(TEMP_PATH, True);
+    if unzipModel(locError) = False then begin
+      ExitWithInfo(locError);
+    end;
+
+    if createModel(locError) = False then begin
+      ExitWithInfo(locError);
+    end;
+    //----- Очистим все порты -----
+    outPorts := outputsQty(m_modelIndex);
+    inPorts := inputsQty(m_modelIndex);
+    SetPortCount(VisualObject, 0, pmOutput, 0, sdRight);
+    SetPortCount(VisualObject, 0, pmInput, 0, sdLeft);
+    for I := 0 to outPorts - 1 do begin
+      retCode := outputVar(m_modelIndex, I, buffer, 256, ttype);
+      if (retCode = 0) then begin
+        SetCondPortCount(VisualObject, 1,  pmOutput,  portType, sdRight, String(buffer));
+      end;
+    end;
+    for I := 0 to inPorts - 1 do begin
+      retCode := inputVar(m_modelIndex, I, buffer, 256, ttype);
+      if (retCode = 0) then begin
+        SetCondPortCount(VisualObject, 1,  pmInput,  portType, sdLeft, String(buffer));
+      end;
+    end;
+    freeFMU(m_modelIndex);
+    m_modelIndex := -1;
+  end;
+end;
+
+  //*****
+  function TFMUDataBlock.unzipModel(var error : String) : Boolean;
+  var
+  zipFile : TZipFile;
+  begin
+    Result := True;
+    if DirectoryExists(TEMP_PATH) then  begin
+      TDirectory.Delete(TEMP_PATH, True);
+    end;
     // 1. Распаковываем файл во временную папку
     zipFile :=  TZipFile.Create;
     try
@@ -248,50 +312,35 @@ begin
       zipFile.Close;
     except
       zipFile.Free;
-      ErrorEvent(txtCom_er_Unzip, msError, VisualObject);
+      error := txtCom_er_Unzip;
+      Result := False;
       Exit;
     end;
     zipFile.Free;
+  end;
+
+  function TFMUDataBlock.createModel(var error : String) : Boolean;
+  begin
+    Result := True;
     // 3. Создаем модель
     m_modelIndex := createFMU(TEMP_PATH);
     if (m_modelIndex < 0 ) then begin
-      ExitWithInfo();
+      error := txtFMU_er_Create;
+      Result := False;
       Exit;
     end;
     // 4. Разбираем файл дескриптора
-    retCode := parsing(m_modelIndex);
-    if (retCode = -1) then begin
-      ExitWithInfo();
+    if (parsing(m_modelIndex) = CODE_FAILED) then begin
+      error := txtFMU_er_parsing;
+      Result := False;
       Exit;
     end;
-
-    retCode := initialize(m_modelIndex, m_modelingTime, m_modelingStep);
-    if (retCode = -1) then begin
-      ExitWithInfo();
+    if (initialize(m_modelIndex, m_modelingTime, m_modelingStep) = CODE_FAILED) then begin
+      error := txtFMU_er_init;
+      Result := False;
       Exit;
     end;
-    //----- Очистим все порты -----
-    outPorts := outputsQty(m_modelIndex);
-    inPorts := inputsQty(m_modelIndex);
-    SetPortCount(VisualObject, outPorts, pmOutput, 0, sdRight);
-    SetPortCount(VisualObject, inPorts, pmInput, 0, sdLeft);
-    for I := 0 to outPorts - 1 do begin
-      retCode := outputVar(m_modelIndex, I, buffer, 256, ttype);
-      if (retCode = 0) then begin
-        SetCondPortCount(VisualObject, 1,  pmOutput,  portType, sdRight, buffer);
-      end;
-    end;
-    for I := 0 to inPorts - 1 do begin
-      retCode := inputVar(m_modelIndex, I, buffer, 256, ttype);
-      if (retCode = 0) then begin
-        SetCondPortCount(VisualObject, 1,  pmInput,  portType, sdLeft, buffer);
-      end;
-    end;
-    freeFMU(m_modelIndex);
-    m_modelIndex := -1;
   end;
-end;
-
 end.
 
 

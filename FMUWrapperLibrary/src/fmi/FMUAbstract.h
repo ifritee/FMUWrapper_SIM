@@ -31,7 +31,6 @@ namespace fmuw
     virtual const std::map<std::string, int> & inputVariables() = 0;
     /** @brief Возвращает все выходные переменные с типом */
     virtual const std::map<std::string, int> & outputVariables() = 0;
-
     /** @brief Возвращает значение типа DOUBLE по имени */
     virtual double doubleValue(const std::string &) = 0;
     /** @brief Возвращает значение типа BOOL по имени */
@@ -40,6 +39,14 @@ namespace fmuw
     virtual int intValue(const std::string &) = 0;
     /** @brief Возвращает значение типа STRING по имени */
     virtual std::string strValue(const std::string &) = 0;
+    /** @brief Устанавливает значение типа DOUBLE по имени */
+    virtual void setDoubleValue(const std::string &, double) = 0;
+    /** @brief Устанавливает значение типа BOOL по имени */
+    virtual void setBoolValue(const std::string &, bool) = 0;
+    /** @brief Устанавливает значение типа INT по имени */
+    virtual void setIntValue(const std::string &, int) = 0;
+    /** @brief Устанавливает значение типа STRING по имени */
+    virtual void setStringValue(const std::string &, const std::string &) = 0;
 
   protected:
     std::string _FMUPath_str; ///< @brief Путь к папке с файлами FMU

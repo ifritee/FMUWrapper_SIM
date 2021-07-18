@@ -46,8 +46,9 @@ namespace fmuw
     int outputsQty();
     /** @brief Шаг расчета модели */
     void modelStep();
-
+    /** @brief Возвращает имя переменной и устанавливает тип*/
     std::string outputVar(int index, int & type);
+     /** @brief Возвращает имя переменной и устанавливает тип*/
     std::string inputVar(int index, int & type);
     /** @brief Возвращает значение типа DOUBLE по имени */
     double doubleValue(const std::string &);
@@ -57,6 +58,14 @@ namespace fmuw
     int intValue(const std::string &);
     /** @brief Возвращает значение типа DOUBLE по имени */
     std::string strValue(const std::string &);
+    /** @brief Устанавливает значение */
+    void setDoubleValue(const char *name, double value);
+    /** @brief Устанавливает значение */
+    void setBoolValue(const char *name, bool value);
+    /** @brief Устанавливает значение */
+    void setIntValue(const char *name, int value);
+    /** @brief Устанавливает значение */
+    void setStringValue(const char *name, std::string value);
 
   private:
     const std::string m_fmuPath;  ///< @brief Путь к распакованной FMU модели

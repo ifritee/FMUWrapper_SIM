@@ -34,6 +34,14 @@ namespace fmuw
     virtual int intValue(const std::string &) = 0;
     /** @brief Возвращает значение типа STRING по имени */
     virtual std::string strValue(const std::string &) = 0;
+    /** @brief Задает значение */
+    virtual void setDoubleValue(const std::string &, double) = 0;
+    /** @brief Задает значение */
+    virtual void setBoolValue(const std::string &, bool) = 0;
+    /** @brief Задает значение */
+    virtual void setIntValue(const std::string &, int) = 0;
+    /** @brief Задает значение */
+    virtual void setStringValue(const std::string &, const std::string &) = 0;
 
   protected:
     std::string _FilenameDLL_str; ///< @brief Полное имя файла с библиотекой модели

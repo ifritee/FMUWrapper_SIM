@@ -136,6 +136,28 @@ namespace fmuw
     return _ModelData_po->stringVar(name);
   }
 
+  void FMU10MExchObject::setDoubleValue(const std::string & name, double value)
+  {
+    _ModelData_po->setVarData(name, &value);
+  }
+
+  void FMU10MExchObject::setBoolValue(const std::string & name, bool value)
+  {
+    char temp = static_cast<char>(value);
+    _ModelData_po->setVarData(name, &temp);
+  }
+
+  void FMU10MExchObject::setIntValue(const std::string & name, int value)
+  {
+    _ModelData_po->setVarData(name, &value);
+  }
+
+  void FMU10MExchObject::setStringValue(const std::string & name, const std::string & value)
+  {
+    const char * strings[] = {value.c_str()};
+    _ModelData_po->setVarData(name, strings);
+  }
+
   void FMU10MExchObject::printModelDescription(fmi10::ModelDescription* md)
   {
     fmi10::Element* e = (fmi10::Element*)md;

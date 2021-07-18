@@ -27,6 +27,19 @@ type
   PINT16  = PSmallInt;
   PINT32 =  PLongint;
 
+const
+  FMU_REAL = 0; // Тип переменной с плавающей точкой FMU модели
+  FMU_INTEGER = 1; // Тип переменной целое FMU модели
+  FMU_BOOLEAN = 2; // Тип переменной флаг FMU модели
+  FMU_STRING = 3; // Тип переменной строка FMU модели
+  FMU_ENUMERATION = 4; // Тип переменной нумератор FMU модели
+
+  CODE_WARNING = -2;  // завершено успешно, с предупреждением
+  CODE_FAILED = -1; // завершено с ошибкой
+  CODE_OK = 0; // завершено успешно
+
+
+
    // @brief unzipFMU Разархивация файла xxx.fmu в папку
    // @param file Имя файла с путём
    // @param dst Папка назначения (может быть tmp)

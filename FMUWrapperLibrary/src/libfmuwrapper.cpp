@@ -215,3 +215,51 @@ int getString(int number, const char *name, char *buffer, int length)
   }
   return -1;
 }
+
+void setDouble(int number, const char *name, double value)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      work->setDoubleValue(name, value);
+    } catch(...) {
+      last_error = work->lastError();
+    }
+  }
+}
+
+void setBool(int number, const char *name, bool value)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      work->setBoolValue(name, value);
+    } catch(...) {
+      last_error = work->lastError();
+    }
+  }
+}
+
+void setInt(int number, const char *name, int value)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      work->setIntValue(name, value);
+    } catch(...) {
+      last_error = work->lastError();
+    }
+  }
+}
+
+void setString(int number, const char *name, char *value)
+{
+  if (number < temp_data.size() && temp_data[number] != nullptr) {
+    fmuw::FMUWork * work = temp_data[number];
+    try {
+      work->setStringValue(name, std::string(value));
+    } catch(...) {
+      last_error = work->lastError();
+    }
+  }
+}

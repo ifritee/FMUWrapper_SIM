@@ -77,4 +77,24 @@ namespace fmuw
     return _Model_po->strValue(name);
   }
 
+  void FMU10Object::setDoubleValue(const std::string & name, double value)
+  {
+    _Model_po->setDoubleValue(name, value);
+  }
+
+  void FMU10Object::setBoolValue(const std::string & name, bool value)
+  {
+    _Model_po->setBoolValue(name, value);
+  }
+
+  void FMU10Object::setIntValue(const std::string & name, int value)
+  {
+    _Model_po->setIntValue(name, value);
+  }
+
+  void FMU10Object::setStringValue(const std::string & name, const std::string & value)
+  {
+    _Model_po->setStringValue(name, value);
+  }
+
 } // namespace fmuw
