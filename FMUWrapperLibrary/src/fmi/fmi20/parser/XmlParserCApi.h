@@ -20,14 +20,14 @@ typedef unsigned int fmi2ValueReference;
 #endif
 
 // elements from ModelDescription
-typedef struct ModelDescription ModelDescription;
-typedef struct ModelStructure ModelStructure;
-typedef struct ScalarVariable ScalarVariable;
-typedef struct Component Component;
-typedef struct SimpleType SimpleType;
-typedef struct Unit Unit;
-typedef struct ListElement ListElement;
-typedef struct Element Element;
+typedef class ModelDescription ModelDescription;
+typedef class ModelStructure ModelStructure;
+typedef class ScalarVariable ScalarVariable;
+typedef class Component Component;
+typedef class SimpleType SimpleType;
+typedef class Unit Unit;
+typedef class ListElement ListElement;
+typedef class Element Element;
 
 // Elements names used in ModelDescription.xml
 typedef enum {

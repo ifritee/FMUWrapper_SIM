@@ -126,6 +126,26 @@ const
    // @param length Длина буфера
    // @return Размер строки
   function getString(number : Integer; name : PAnsiChar; buffer : PAnsiChar; length : Integer) : Integer; external FMULIB_DLL;
+   // @brief setDouble Возвращает значение типа DOUBLE по имени
+   // @param number номер модели
+   // @param name Имя переменной
+   // @param value Значение
+  procedure setDouble(number : Integer; name : PAnsiChar; value : Real); external FMULIB_DLL;
+   // @brief setBool Возвращает значение типа Bool по имени
+   // @param number номер модели
+   // @param name Имя переменной
+   // @param value Значение
+  procedure setBool(number : Integer; name : PAnsiChar; value : Boolean); external FMULIB_DLL;
+   // @brief setBool Возвращает значение типа Int по имени
+   // @param number номер модели
+   // @param name Имя переменной
+   // @param value Значение
+  procedure setInt(number : Integer; name : PAnsiChar; value : Integer); external FMULIB_DLL;
+   // @brief setBool Возвращает значение типа String по имени
+   // @param number номер модели
+   // @param name Имя переменной
+   // @param value строка
+  procedure setString(number : Integer; name : PAnsiChar; value : PAnsiChar); external FMULIB_DLL;
   
 implementation
 

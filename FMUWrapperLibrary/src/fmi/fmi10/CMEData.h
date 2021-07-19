@@ -11,7 +11,7 @@ namespace fmuw
 {
   namespace fmi10
   {
-     class FMU;
+     struct FMU;
 
     /**
      * @class CMEData

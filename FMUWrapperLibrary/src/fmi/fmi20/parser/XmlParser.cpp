@@ -130,7 +130,7 @@ void XmlParser::parseElementAttributes(Element *element, bool ignoreUnknownAttri
             XmlParser::Att key = checkAttribute((char *)name);
             char *theValue = value ? (char *)checkStrdup((char *)value) : NULL;
             element->attributes.insert(std::pair<XmlParser::Att, char *>(key, theValue));
-        } catch (XmlParserException &ex) {
+        } catch (XmlParserException & /*ex*/) {
             if (ignoreUnknownAttributes) {
                 xmlFree(name);
                 xmlFree(value);

@@ -29,7 +29,7 @@ void freeModelDescription(ModelDescription *md) {
 
 /* ModelDescription fields access*/
 int getUnitDefinitionsSize(ModelDescription *md) {
-    return md->unitDefinitions.size();
+    return static_cast<int>(md->unitDefinitions.size());
 }
 
 Unit *getUnitDefinition(ModelDescription *md, int index) {
@@ -37,7 +37,7 @@ Unit *getUnitDefinition(ModelDescription *md, int index) {
 }
 
 int getTypeDefinitionsSize(ModelDescription *md) {
-    return md->typeDefinitions.size();
+    return static_cast<int>(md->typeDefinitions.size());
 }
 
 SimpleType *getTypeDefinition(ModelDescription *md, int index) {
@@ -53,7 +53,7 @@ Component *getCoSimulation(ModelDescription *md) {
 }
 
 int getLogCategoriesSize(ModelDescription *md) {
-    return md->logCategories.size();
+    return static_cast<int>(md->logCategories.size());
 }
 
 Element *getLogCategory(ModelDescription *md, int index) {
@@ -65,7 +65,7 @@ Element *getDefaultExperiment(ModelDescription *md) {
 }
 
 int getVendorAnnotationsSize(ModelDescription *md) {
-    return md->vendorAnnotations.size();
+    return static_cast<int>(md->vendorAnnotations.size());
 }
 
 Element *getVendorAnnotation(ModelDescription *md, int index) {
@@ -73,7 +73,7 @@ Element *getVendorAnnotation(ModelDescription *md, int index) {
 }
 
 int getScalarVariableSize(ModelDescription *md) {
-    return md->modelVariables.size();
+    return static_cast<int>(md->modelVariables.size());
 }
 
 ScalarVariable *getScalarVariable(ModelDescription *md, int index) {
@@ -98,7 +98,7 @@ const char *getDescriptionForVariable(ModelDescription *md, ScalarVariable *sv) 
 
 /* ModelStructure fields access */
 int getOutputs(ModelStructure *ms) {
-    return ms->outputs.size();
+    return static_cast<int>(ms->outputs.size());
 }
 
 Element *getOutput(ModelStructure *ms, int index) {
@@ -106,7 +106,7 @@ Element *getOutput(ModelStructure *ms, int index) {
 }
 
 int getDerivativesSize(ModelStructure *ms) {
-    return ms->derivatives.size();
+    return static_cast<int>(ms->derivatives.size());
 }
 
 Element *getDerivative(ModelStructure *ms, int index) {
@@ -114,7 +114,7 @@ Element *getDerivative(ModelStructure *ms, int index) {
 }
 
 int getDiscreteStates(ModelStructure *ms) {
-    return ms->discreteStates.size();
+    return static_cast<int>(ms->discreteStates.size());
 }
 
 Element *getDiscreteState(ModelStructure *ms, int index) {
@@ -122,7 +122,7 @@ Element *getDiscreteState(ModelStructure *ms, int index) {
 }
 
 int getInitialUnknowns(ModelStructure *ms) {
-    return ms->initialUnknowns.size();
+    return static_cast<int>(ms->initialUnknowns.size());
 }
 
 Element *getInitialUnknown(ModelStructure *ms, int index) {
@@ -135,7 +135,7 @@ Element *getTypeSpec(ScalarVariable *sv) {
 }
 
 int getAnnotationsSize(ScalarVariable *sv) {
-    return sv->annotations.size();
+    return static_cast<int>(sv->annotations.size());
 }
 
 Element *getAnnotation(ScalarVariable *sv, int index) {
@@ -160,7 +160,7 @@ Enu getCausality(ScalarVariable *sv) {
 
 /* Component field access */
 int getFilesSize(Component *c) {
-    return c->files.size();
+    return static_cast<int>(c->files.size());
 }
 
 Element *getFile(Component *c, int index) {
@@ -178,7 +178,7 @@ Element *getBaseUnit(Unit *u) {
 }
 
 int getDisplayUnitsSize(Unit *u) {
-    return u->displayUnits.size();
+    return static_cast<int>(u->displayUnits.size());
 }
 
 Element *getDisplayUnit(Unit *u, int index) {
@@ -187,7 +187,7 @@ Element *getDisplayUnit(Unit *u, int index) {
 
 /* ListElement field access */
 int getListSize(ListElement *le) {
-    return le->list.size();
+    return static_cast<int>(le->list.size());
 }
 
 Element *getElementFromList(ListElement *le, int index) {
@@ -204,7 +204,7 @@ const char *getElementTypeName(Element *el) {
 }
 
 const char **getAttributesAsArray(Element *el, int *n) {
-    *n = el->attributes.size();
+    *n = static_cast<int>(el->attributes.size());
     const char **result = (const char **)calloc(2 * (*n), sizeof(char *));
     if (!result) {
         logThis(ERROR_FATAL, "Out of memory");

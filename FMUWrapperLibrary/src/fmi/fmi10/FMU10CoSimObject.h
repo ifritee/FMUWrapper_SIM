@@ -7,8 +7,8 @@ namespace fmuw
 
   namespace fmi10 {
     struct FMU;
-    struct CCSData;
-    struct ModelDescription;
+    class CCSData;
+    class ModelDescription;
   }
 
   class FMU10CoSimObject : public FMU10ObjectAbstract

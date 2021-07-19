@@ -730,7 +730,7 @@ namespace fmuw
       }
       else {
         // continue existing string
-        n = strlen(data) + len;
+        n = static_cast<int>(strlen(data)) + len;
         data = (char*)realloc(data, n + 1);
         strncat(data, s, len);
         data[n] = '\0';
@@ -905,7 +905,7 @@ namespace fmuw
       }
       logThis(ERROR_INFO, "parse %s", xmlPath);
       while (!done) {
-        int n = fread(text, sizeof(char), XMLBUFSIZE, file);
+        int n = static_cast<int>(fread(text, sizeof(char), XMLBUFSIZE, file));
         if (n != XMLBUFSIZE) done = 1;
         if (!XML_Parse(parser, text, n, done)) {
           logThis(ERROR_ERROR, "Parse error in file %s at line %lu:\n%s\n",

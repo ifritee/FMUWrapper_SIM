@@ -115,7 +115,8 @@ namespace fmuw
     } CoSimulation;
 
     // AST node for element ModelDescription
-    struct ModelDescription {
+    class ModelDescription {
+    public:
       Elm type;                // element type
       const char** attributes; // null or n attribute value strings
       int n;                   // size of attributes, even number

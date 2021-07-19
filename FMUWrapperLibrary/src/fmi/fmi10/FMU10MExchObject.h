@@ -11,7 +11,7 @@ namespace fmuw
   namespace fmi10 {
     class CMEData;
     struct FMU;
-    struct ModelDescription;
+    class ModelDescription;
   }
 
   class FMU10MExchObject : public FMU10ObjectAbstract

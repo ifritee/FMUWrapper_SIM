@@ -65,6 +65,10 @@ type
     function unzipModel(var error : String) : Boolean;
     // Создание новой модели
     function createModel(var error : String) : Boolean;
+    // Считывает параметры из модели
+    function readModelVars() : Boolean;
+    // Записывает параметры в модель
+    function writeModelVars() : Boolean;
 
   const
     // Тип создаваемых портов (под математическую связь)
@@ -195,17 +199,24 @@ begin
         Result := r_Fail;
         Exit;
       end;
-      step(m_modelIndex);
-      for I := 0 to cY.Count - 1 do begin
-        if (m_outPortsType[I] = 0) then begin // Для DOUBLE
-          Y[I].Arr^[0] := getDouble(m_modelIndex, PAnsiChar(m_outPortsName[I]));
-        end;
+      if (writeModelVars() = False) then begin
+        ErrorEvent(txtFMU_er_Write, msError, VisualObject);
+        Result := r_Fail;
+        Exit;
       end;
+
+      step(m_modelIndex);
+      if readModelVars() = False then begin
+        ErrorEvent(txtFMU_er_type, msError, VisualObject);
+        Result := r_Fail;
+        Exit;
+      end;
+
     end;
   end;
 end;
 
-function     TFMUDataBlock.GetParamID(const ParamName:string; var DataType:TDataType; var IsConst: boolean) : NativeInt;
+function TFMUDataBlock.GetParamID(const ParamName:string; var DataType:TDataType; var IsConst: boolean) : NativeInt;
 begin
   Result:=inherited GetParamId(ParamName,DataType,IsConst);
   if Result = -1 then begin
@@ -339,6 +350,48 @@ end;
       error := txtFMU_er_init;
       Result := False;
       Exit;
+    end;
+  end;
+
+  function TFMUDataBlock.readModelVars() : Boolean;
+  var
+    I : Integer;
+  begin
+    Result := True;
+    for I := 0 to cY.Count - 1 do begin
+      if (m_outPortsType[I] = FMU_REAL) then begin // Для DOUBLE
+        Y[I].Arr^[0] := getDouble(m_modelIndex, PAnsiChar(m_outPortsName[I]));
+      end else if (m_outPortsType[I] = FMU_INTEGER) OR (m_outPortsType[I] = FMU_ENUMERATION) then begin
+        Y[I].Arr^[0] := getInt(m_modelIndex, PAnsiChar(m_outPortsName[I]));
+      end else if (m_outPortsType[I] = FMU_BOOLEAN) then begin
+        Y[I].Arr^[0] := Integer(getBool(m_modelIndex, PAnsiChar(m_outPortsName[I])));
+      end else if (m_outPortsType[I] = FMU_STRING) then begin
+        // Тут хз
+      end else begin
+        Result := False;
+      end;
+    end;
+  end;
+
+  function TFMUDataBlock.writeModelVars() : Boolean;
+  var
+    I : Integer;
+    value : Real;
+  begin
+    Result := True;
+    for I := 0 to cU.Count - 1 do begin
+      value := U[I].Arr^[0];
+      if (m_inPortsType[I] = FMU_REAL) then begin
+        setDouble(m_modelIndex, PAnsiChar(m_inPortsName[I]), value);
+      end else if (m_inPortsType[I] = FMU_INTEGER) OR (m_inPortsType[I] = FMU_ENUMERATION) then begin
+        setInt(m_modelIndex, PAnsiChar(m_inPortsName[I]), Trunc(value));
+      end else if (m_inPortsType[I] = FMU_BOOLEAN) then begin
+        setBool(m_modelIndex, PAnsiChar(m_inPortsName[I]), value > 0.0);
+      end  else if (m_inPortsType[I] = FMU_STRING) then begin
+        // Тут хз
+      end else begin
+        Result := False;
+      end;
     end;
   end;
 end.

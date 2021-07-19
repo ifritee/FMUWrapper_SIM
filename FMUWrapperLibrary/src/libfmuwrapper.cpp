@@ -19,7 +19,7 @@ int createFMU(const char * path)
 {
   fmuw::FMUWork * work = new fmuw::FMUWork(path);
   temp_data.push_back(work);
-  return temp_data.size() - 1;
+  return static_cast<int>(temp_data.size() - 1);
 }
 
 int freeFMU(int number)

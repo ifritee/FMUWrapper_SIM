@@ -75,12 +75,12 @@ namespace fmuw
 
   int FMUWork::inputsQty()
   {
-    return m_fmuObject->inputVariables().size();
+    return static_cast<int>(m_fmuObject->inputVariables().size());
   }
 
   int FMUWork::outputsQty()
   {
-    return m_fmuObject->outputVariables().size();
+    return static_cast<int>(m_fmuObject->outputVariables().size());
   }
 
   void FMUWork::modelStep()
