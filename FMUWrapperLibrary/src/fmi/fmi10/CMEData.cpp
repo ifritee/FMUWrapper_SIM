@@ -86,28 +86,40 @@ namespace fmuw
     {
       ScalarVariable* sv = getVariableByName(_Model_po->modelDescription, name.c_str());
       fmiValueReference vr = getValueReference(sv);
-      _Model_po->setBoolean(_Component_o, &vr, qty, value);
+      fmiStatus status = _Model_po->setBoolean(_Component_o, &vr, qty, value);
+      if (status != fmiOK) {
+        /// @todo Сделать обработку ошибок
+      }
     }
 
     void CMEData::setVarData(const std::string& name, const int* value, size_t qty)
     {
       ScalarVariable* sv = getVariableByName(_Model_po->modelDescription, name.c_str());
       fmiValueReference vr = getValueReference(sv);
-      _Model_po->setInteger(_Component_o, &vr, qty, value);
+      fmiStatus status = _Model_po->setInteger(_Component_o, &vr, qty, value);
+      if (status != fmiOK) {
+        /// @todo Сделать обработку ошибок
+      }
     }
 
     void CMEData::setVarData(const std::string& name, const double* value, size_t qty)
     {
       ScalarVariable* sv = getVariableByName(_Model_po->modelDescription, name.c_str());
       fmiValueReference vr = getValueReference(sv);
-      _Model_po->setReal(_Component_o, &vr, qty, value);
+      fmiStatus status = _Model_po->setReal(_Component_o, &vr, qty, value);
+      if (status != fmiOK) {
+        /// @todo Сделать обработку ошибок
+      }
     }
 
     void CMEData::setVarData(const std::string& name, const char* value[], size_t qty)
     {
       ScalarVariable* sv = getVariableByName(_Model_po->modelDescription, name.c_str());
       fmiValueReference vr = getValueReference(sv);
-      _Model_po->setString(_Component_o, &vr, qty, value);
+      fmiStatus status = _Model_po->setString(_Component_o, &vr, qty, value);
+      if (status != fmiOK) {
+        /// @todo Сделать обработку ошибок
+      }
     }
 
     void CMEData::step(double stepSize)
@@ -115,7 +127,7 @@ namespace fmuw
       if (_IsSimulationEnd == true) {
         return;
       }
-      if ((_CurrentTime_d == _EndTime_d) || (!x || !xdot || !z || !prez)) {
+      if ((_CurrentTime_d == _EndTime_d) /*|| (!x || !xdot || !z || !prez)*/) {
         freeData();
         return;
       }
@@ -247,6 +259,7 @@ namespace fmuw
     {
       ScalarVariable** vars = _Model_po->modelDescription->modelVariables;
       for (int i = 0; vars[i]; ++i) {
+        fmiStatus status = fmiOK;
         ScalarVariable* sv = vars[i];
         if (getAlias(sv) != fmi10::enu_noAlias) {
           continue;
@@ -257,27 +270,32 @@ namespace fmuw
           switch (sv->typeSpec->type) {
           case elm_Real: {
             fmiReal variable;
-            _Model_po->getReal(_Component_o, &vr, 1, &variable);
+            status = _Model_po->getReal(_Component_o, &vr, 1, &variable);
             _DoublesVar_map[name] = variable;
           } break;
           case elm_Integer:
           case elm_Enumeration: {
             fmiInteger variable;
-            _Model_po->getInteger(_Component_o, &vr, 1, &variable);
+            status = _Model_po->getInteger(_Component_o, &vr, 1, &variable);
             _IntegersVar_map[name] = variable;
           } break;
           case elm_Boolean: {
             fmiBoolean variable;
-            _Model_po->getBoolean(_Component_o, &vr, 1, &variable);
+            status = _Model_po->getBoolean(_Component_o, &vr, 1, &variable);
+            _BooleansVar_map[name] = variable;
           } break;
           case elm_String: {
             fmiString variable;
-            _Model_po->getString(_Component_o, &vr, 1, &variable);
+            status = _Model_po->getString(_Component_o, &vr, 1, &variable);
+            _StringsVar_map[name] = variable;
           } break;
           default: {
             throw std::logic_error("No value for type = " + std::to_string(sv->typeSpec->type));
           }
           }
+        }
+        if (status != fmiOK) {
+          /// @todo Сделать обработку ошибок
         }
       }
     }

@@ -83,7 +83,7 @@ namespace fmuw
       fmiCallbackFunctions _Callbacks_o; ///< @brief Набор Callback-функций для работы с моделью
       int nx = 0; ///< @brief Количество состояний переменных
       int nz = 0; ///< @brief Количество состояний событий переменных
-      double * x, * xdot, * z, * prez; ///< @brief Промежуточные состояния
+      double * x = nullptr, * xdot = nullptr, * z = nullptr, * prez = nullptr; ///< @brief Промежуточные состояния
       double _CurrentTime_d = 0.0; ///< @brief Текущее время
 
       std::map<std::string, int> _OutVarNames_map; ///< @brief Набор всех выходных имен

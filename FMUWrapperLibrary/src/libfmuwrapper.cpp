@@ -159,7 +159,6 @@ double getDouble(int number, const char *name)
     fmuw::FMUWork * work = temp_data[number];
     try {
       return work->doubleValue(name);
-
     } catch(...) {
       last_error = work->lastError();
       return 0.0;
@@ -174,7 +173,6 @@ bool getBool(int number, const char *name)
     fmuw::FMUWork * work = temp_data[number];
     try {
       return work->boolValue(name);
-
     } catch(...) {
       last_error = work->lastError();
       return false;
@@ -189,7 +187,6 @@ int getInt(int number, const char *name)
     fmuw::FMUWork * work = temp_data[number];
     try {
       return work->intValue(name);
-
     } catch(...) {
       last_error = work->lastError();
       return 0;
@@ -200,6 +197,7 @@ int getInt(int number, const char *name)
 
 int getString(int number, const char *name, char *buffer, int length)
 {
+  int strLength = -1;
   if (number < temp_data.size() && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
@@ -209,11 +207,12 @@ int getString(int number, const char *name, char *buffer, int length)
         return -1;
       }
       strcpy(buffer, value.c_str());
+      strLength = value.size();
     } catch(...) {
       last_error = work->lastError();
     }
   }
-  return -1;
+  return strLength;
 }
 
 void setDouble(int number, const char *name, double value)

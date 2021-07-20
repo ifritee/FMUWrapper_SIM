@@ -16,11 +16,11 @@ int main(int argc, char *argv[])
 //  const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu10/cs/bouncingBall.fmu";
 //    const char * fmu = "/home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_cs/bouncingBall.fmu";
 //    const char * fmu = "/home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_me/bouncingBall.fmu";
-    const char * fmu = "/home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_cs/bouncingBall.fmu";
+    const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu20/me/values.fmu";
 //    const char * fmu = "/home/ifritee/aaa/fmusdk/dist/fmu20/me/values.fmu";
 
-  system("cd /home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_cs; 7z x -y bouncingBall.fmu -obouncingBall");
-  int module = createFMU("/home/ifritee/tmp/FMUWrapper_SIM/Demo/demo_FMI_2_cs/bouncingBall");
+  system("cd /home/ifritee/aaa/fmusdk/dist/fmu20/me; 7z x -y values.fmu -ovalues");
+  int module = createFMU("/home/ifritee/aaa/fmusdk/dist/fmu20/me/values");
   if (module < CODE_OK) {
     char error_buffer[1024] = {0};
     lastError(error_buffer, sizeof(error_buffer));
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     char buffer[1024];
     int type = 0;
     int outputVarQty = outputsQty(module);
-    std::vector<std::pair<std::string, int> > outVars;
+    std::vector<std::pair<std::string, int> > outVars, inVars;
     for(int i = 0; i < outputVarQty; ++i) {
       if( outputVar(module, i, buffer, sizeof(buffer), type) < CODE_OK) {
         break;
@@ -48,53 +48,92 @@ int main(int argc, char *argv[])
       std::cout<<"OUT VAR >> "<<buffer<<" TYPE >> "<<type<<std::endl;
       outVars.push_back(std::pair<std::string, int>(std::string(buffer), type));
     }
-
+    std::cout<<std::endl;
     // 2. Задание начальных значений свойств модели
+    int inputVarQty = inputsQty(module);
+    for(int i = 0; i < inputVarQty; ++i) {
+      if( inputVar(module, i, buffer, sizeof(buffer), type) < CODE_OK) {
+        break;
+      }
+      std::cout<<"IN VAR >> "<<buffer<<" TYPE >> "<<type<<std::endl;
+      inVars.push_back(std::pair<std::string, int>(std::string(buffer), type));
+    }
     // 3. Цикл по шагам симуляции модели
     for (int i = 0; i < 10; ++i) {
-      if ( step(module) < CODE_OK) {
-
-        // 4. Задание очередных значений свойств модели
-        // 5. Шаг
-        // 6. Считывание состояния индикаторов модели
-      }
+      // 4. Берем выходные данные
       for(auto p : outVars) {
         switch (p.second) {
         case fmuw::FTReal_en: {  // double
           double var = getDouble(module, p.first.c_str());
-          if (p.first == "h") {
-            std::cout<<p.first<<" = "<<var<<std::endl;
-          }
+          std::cout<<"DOUBLE ::: "<<p.first<<" = "<<var<<std::endl;
+        } break;
+        case fmuw::FTInteger_en: case fmuw::FTEnumeration_en: {
+          int var = getInt(module, p.first.c_str());
+          std::cout<<"INTEGER ::: "<<p.first<<" = "<<var<<std::endl;
+        } break;
+        case fmuw::FTBoolean_en: {
+          int var = getBool(module, p.first.c_str());
+          std::cout<<"BOOLEAN ::: "<<p.first<<" = "<<var<<std::endl;
+        } break;
+        case fmuw::FTString_en: {
+          char temp[1024];
+          int length = getString(module, p.first.c_str(), temp, 1024);
+          std::cout<<"STRING ::: "<<p.first<<" = "<<length<<" >> "<<temp<<std::endl;
         } break;
         default:
           break;
         }
       }
-    }
-    std::cout<<std::endl;
-    if ( initialize(module, time_end, oneStep) < CODE_OK) {
-
-    }
-    for (int i = 0; i < 10; ++i) {
-      if ( step(module) < CODE_OK) {
-
-        // 4. Задание очередных значений свойств модели
-        // 5. Шаг
-        // 6. Считывание состояния индикаторов модели
-      }
-      for(auto p : outVars) {
+      int varInt = 5;
+      bool varBool = 1;
+      double varReal = 40.1;
+      // 5. Устанавливаем входные данные
+      for(auto p : inVars) {
         switch (p.second) {
         case fmuw::FTReal_en: {  // double
-          double var = getDouble(module, p.first.c_str());
-          if (p.first == "h") {
-            std::cout<<p.first<<" = "<<var<<std::endl;
-          }
+          setDouble(module, p.first.c_str(), varReal);
         } break;
-        default:
-          break;
+        case fmuw::FTInteger_en: case fmuw::FTEnumeration_en: {
+          setInt(module, p.first.c_str(), varInt);
+        } break;
+        case fmuw::FTBoolean_en: {
+          setBool(module, p.first.c_str(), varBool);
+        } break;
+        case fmuw::FTString_en: {
+          char temp_str[] = "AaAaA";
+          setString(module, p.first.c_str(), temp_str);
+        } break;
         }
       }
+      // 6. Шаг
+      if ( step(module) < CODE_OK) {
+
+      }
     }
+//    std::cout<<std::endl;
+//    if ( initialize(module, time_end, oneStep) < CODE_OK) {
+
+//    }
+//    for (int i = 0; i < 10; ++i) {
+//      if ( step(module) < CODE_OK) {
+
+//        // 4. Задание очередных значений свойств модели
+//        // 5. Шаг
+//        // 6. Считывание состояния индикаторов модели
+//      }
+//      for(auto p : outVars) {
+//        switch (p.second) {
+//        case fmuw::FTReal_en: {  // double
+//          double var = getDouble(module, p.first.c_str());
+//          if (p.first == "h") {
+//            std::cout<<p.first<<" = "<<var<<std::endl;
+//          }
+//        } break;
+//        default:
+//          break;
+//        }
+//      }
+//    }
 
     // 7. Завершение работы с моделью
   }

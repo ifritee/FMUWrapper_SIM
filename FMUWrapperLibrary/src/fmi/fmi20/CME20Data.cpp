@@ -78,6 +78,7 @@ namespace fmuw
       if ((!x || !xdot) || (nz > 0 && (!z || !prez))) {
         throw std::out_of_range("Out of memory.");
       }
+
       fmi2Status fmi2Flag = _Model_po->setupExperiment(_Component_o, fmi2False, 0, tStart, fmi2True, tEnd);
       if (fmi2Flag > fmi2Warning) {
         throw std::logic_error("Could not initialize model. Failed FMI setup experiment.");
@@ -116,28 +117,40 @@ namespace fmuw
     {
       ScalarVariable* sv = getVariable(_Model_po->modelDescription, name.c_str());
       fmi2ValueReference vr = getValueReference(sv);
-      _Model_po->setBoolean(_Component_o, &vr, qty, value);
+      fmi2Status status = _Model_po->setBoolean(_Component_o, &vr, qty, value);
+      if (status != fmi2OK) {
+        throw std::logic_error("");
+      }
     }
 
     void CME20Data::setIntData(const std::string& name, const int* value, size_t qty)
     {
       ScalarVariable* sv = getVariable(_Model_po->modelDescription, name.c_str());
       fmi2ValueReference vr = getValueReference(sv);
-      _Model_po->setInteger(_Component_o, &vr, qty, value);
+      fmi2Status status = _Model_po->setInteger(_Component_o, &vr, qty, value);
+      if (status != fmi2OK) {
+        throw std::logic_error("");
+      }
     }
 
     void CME20Data::setRealData(const std::string& name, const double* value, size_t qty)
     {
       ScalarVariable* sv = getVariable(_Model_po->modelDescription, name.c_str());
       fmi2ValueReference vr = getValueReference(sv);
-      _Model_po->setReal(_Component_o, &vr, qty, value);
+      fmi2Status status = _Model_po->setReal(_Component_o, &vr, qty, value);
+      if (status != fmi2OK) {
+        throw std::logic_error("");
+      }
     }
 
     void CME20Data::setStrData(const std::string& name, const char* value[], size_t qty)
     {
       ScalarVariable* sv = getVariable(_Model_po->modelDescription, name.c_str());
       fmi2ValueReference vr = getValueReference(sv);
-      _Model_po->setString(_Component_o, &vr, qty, value);
+      fmi2Status status = _Model_po->setString(_Component_o, &vr, qty, value);
+      if (status != fmi2OK) {
+        throw std::logic_error("");
+      }
     }
 
     void CME20Data::step(double stepSize)
@@ -292,6 +305,7 @@ namespace fmuw
     {
       int count = getScalarVariableSize(_Model_po->modelDescription);
       for (int i = 0; i < count; ++i) {
+        fmi2Status status = fmi2OK;
         ScalarVariable* sv = getScalarVariable(_Model_po->modelDescription, i);
         fmi2ValueReference vr = getValueReference(sv);
         const char* name = getAttributeValue((Element*)sv, att_name);
@@ -299,26 +313,31 @@ namespace fmuw
         switch (elementType) {
         case elm_Real: {
           fmi2Real variable;
-          _Model_po->getReal(_Component_o, &vr, 1, &variable);
+          status = _Model_po->getReal(_Component_o, &vr, 1, &variable);
           _DoublesVar_map[name] = variable;
         } break;
         case elm_Integer:
         case elm_Enumeration: {
           fmi2Integer variable;
-          _Model_po->getInteger(_Component_o, &vr, 1, &variable);
+          status = _Model_po->getInteger(_Component_o, &vr, 1, &variable);
           _IntegersVar_map[name] = variable;
         } break;
         case elm_Boolean: {
           fmi2Boolean variable;
-          _Model_po->getBoolean(_Component_o, &vr, 1, &variable);
+          status = _Model_po->getBoolean(_Component_o, &vr, 1, &variable);
+          _BooleansVar_map[name] = variable;
         } break;
         case elm_String: {
           fmi2String variable;
-          _Model_po->getString(_Component_o, &vr, 1, &variable);
+          status = _Model_po->getString(_Component_o, &vr, 1, &variable);
+          _StringsVar_map[name] = variable;
         } break;
         default: {
           throw std::logic_error("No value for type = " + std::to_string(elementType));
         }
+        }
+        if (status != fmi2OK) {
+          /// @todo Действия по выбору ошибки
         }
       }
     }
