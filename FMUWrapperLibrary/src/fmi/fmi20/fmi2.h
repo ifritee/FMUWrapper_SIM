@@ -75,7 +75,7 @@ namespace fmuw
       fmi2GetIntegerStatusTYPE* getIntegerStatus;
       fmi2GetBooleanStatusTYPE* getBooleanStatus;
       fmi2GetStringStatusTYPE* getStringStatus;
-      /***************************************************
+      /********************************************** *****
         Functions for FMI2 for Model Exchange
         ****************************************************/
       fmi2EnterEventModeTYPE* enterEventMode;

@@ -22,7 +22,7 @@ namespace fmuw
     CME20Data::CME20Data(FMU* fmu, const std::string& path)
       : _Model_po(fmu)
       , _ModulePath_str(path)
-      , _Callbacks_po(new fmi2CallbackFunctions({ fmu20meLogger, calloc, free, nullptr, fmu }))
+      , _Callbacks_po(new fmi2CallbackFunctions({ fmu20meLogger, calloc, free, nullptr, nullptr }))
     {
       _ModelID_str = getAttributeValue((Element*)(_Model_po->modelDescription), att_guid);
       _InstanceName_str = getAttributeValue((Element*)getModelExchange(_Model_po->modelDescription), att_modelIdentifier);
@@ -102,10 +102,6 @@ namespace fmuw
           throw std::logic_error("could not set a new discrete state");
         }
       }
-      if (!_EventInfo_o.terminateSimulation) { // Работаем до остановки модели
-        // enter Continuous-Time Mode
-        _Model_po->enterContinuousTimeMode(_Component_o);
-      }
 
       _CurrentTime_d = tStart;
       FormationVarTypes_v();
@@ -158,9 +154,13 @@ namespace fmuw
       if (_IsSimulationEnd == true) {
         return;
       }
-      if ((_CurrentTime_d == _EndTime_d) || (!x || !xdot || !z || !prez) || _EventInfo_o.terminateSimulation) {
+      if ((_CurrentTime_d == _EndTime_d) || !x || !xdot || _EventInfo_o.terminateSimulation) {
         freeData();
         return;
+      }
+      if (!_EventInfo_o.terminateSimulation) { // Работаем до остановки модели
+        // enter Continuous-Time Mode
+        _Model_po->enterContinuousTimeMode(_Component_o);
       }
       // get current state and derivatives
       fmi2Status fmi2Flag = _Model_po->getContinuousStates(_Component_o, x, nx);
@@ -203,8 +203,8 @@ namespace fmuw
         stateEvent = stateEvent || (prez[i] * z[i] < 0);
       }
       // check for step event, e.g. dynamic state selection
-      fmi2Boolean stepEvent, terminateSimulation;
-      fmi2Flag = _Model_po->completedIntegratorStep(_Component_o, fmi2True, &stepEvent, &terminateSimulation);
+      fmi2Boolean terminateSimulation;
+      fmi2Flag = _Model_po->completedIntegratorStep(_Component_o, fmi2True, &_StepEvent_b, &terminateSimulation);
       if (fmi2Flag > fmi2Warning) {
         throw std::logic_error("could not complete intgrator step");
       }
@@ -212,7 +212,7 @@ namespace fmuw
         freeData(); // success: model requested termination at
         return; // success
       }
-      if (timeEvent || stateEvent || stepEvent) {
+//      if (timeEvent || stateEvent || _StepEvent_b) { /// @todo Убрал, чтоб можно было задавать свои значения
         _Model_po->enterEventMode(_Component_o);
         // event iteration in one step, ignoring intermediate results
         _EventInfo_o.newDiscreteStatesNeeded = fmi2True;
@@ -225,9 +225,10 @@ namespace fmuw
           }
         }
         // enter Continuous-Time Mode
-        _Model_po->enterContinuousTimeMode(_Component_o);
-      }
+//        _Model_po->enterContinuousTimeMode(_Component_o);
+//      }
       FillVariables_v();
+
     }
 
     const std::map<std::string, int>& CME20Data::outVarNames() const

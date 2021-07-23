@@ -79,6 +79,7 @@ namespace fmuw
       fmi2Component _Component_o; ///< @brief Компонент FMU
       fmi2Real _StartTime_d = 0.0; ///< @brief Время запуска
       fmi2Real _EndTime_d = 0.0; ///< @brief Время останова
+      fmi2Boolean _StepEvent_b = 0;
       std::string _ModulePath_str; ///< @brief Путь к файлам модели
       fmi2CallbackFunctions* _Callbacks_po;  ///< @brief Набор функций обратного вызова
       fmi2EventInfo _EventInfo_o; ///< @brief Обновление при вызове, инициализации и обновлении прерывания
