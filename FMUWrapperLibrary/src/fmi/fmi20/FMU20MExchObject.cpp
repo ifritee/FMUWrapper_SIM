@@ -52,9 +52,9 @@ namespace fmuw
 #endif /* WINDOWS */
     if (!handle) {
 #if WINDOWS
-      throw std::runtime_error(std::string("The error was: ") + std::to_string(GetLastError()));
+      throw std::runtime_error(std::string("Model library was not load: ") + _FilenameDLL_str + " >>" + std::to_string(GetLastError()));
 #else
-      throw std::runtime_error(std::string("The error was: ") + dlerror());
+      throw std::runtime_error(std::string("Model library was not load: ") + _FilenameDLL_str + " >>" + dlerror());
 #endif
     }
     _ModelUnit_po->dllHandle = handle;

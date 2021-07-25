@@ -279,10 +279,12 @@ begin
     end;
     if unzipModel(locError) = False then begin
       ExitWithInfo(locError);
+      Exit;
     end;
 
     if createModel(locError) = False then begin
       ExitWithInfo(locError);
+      Exit;
     end;
     //----- Очистим все порты -----
     outPorts := outputsQty(m_modelIndex);
@@ -331,6 +333,8 @@ end;
   end;
 
   function TFMUDataBlock.createModel(var error : String) : Boolean;
+  var
+    buffer : Array [0..256] of AnsiChar;
   begin
     Result := True;
     // 3. Создаем модель
@@ -342,12 +346,14 @@ end;
     end;
     // 4. Разбираем файл дескриптора
     if (parsing(m_modelIndex) = CODE_FAILED) then begin
-      error := txtFMU_er_parsing;
+      lastError(buffer, 256);
+      error := txtFMU_er_parsing + ' >> ' + buffer;
       Result := False;
       Exit;
     end;
     if (initialize(m_modelIndex, m_modelingTime, m_modelingStep) = CODE_FAILED) then begin
-      error := txtFMU_er_init;
+      lastError(buffer, 256);
+      error := txtFMU_er_init + ' >> ' + buffer;
       Result := False;
       Exit;
     end;

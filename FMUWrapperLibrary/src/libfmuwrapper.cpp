@@ -24,7 +24,7 @@ int createFMU(const char * path)
 
 int freeFMU(int number)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     //std::filesystem::remove_all(work->fmuPath());
     delete work;
@@ -45,39 +45,41 @@ void lastError(char *error, const size_t size)
 
 int parsing(int number)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       if (work->DescriptionRead_b() == false) {
         last_error = work->lastError();
         return CODE_FAILED;
       }
+      return CODE_OK;
     }
     catch (std::exception& e) {
       last_error = e.what();
       return CODE_FAILED;
     }
   }
-  return CODE_OK;
+  return CODE_FAILED;
 }
 
 int initialize(int number, double entTime, double stepSize)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       work->modelInit(entTime, stepSize);
+      return CODE_OK;
     } catch(...) {
       last_error = work->lastError();
       return CODE_FAILED;
     }
   }
-  return CODE_OK;
+  return CODE_FAILED;
 }
 
 int outputsQty(int number)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       return work->outputsQty();
@@ -91,7 +93,7 @@ int outputsQty(int number)
 
 int inputsQty(int number)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       return work->inputsQty();
@@ -105,7 +107,7 @@ int inputsQty(int number)
 
 int step(int number)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       work->modelStep();
@@ -119,11 +121,11 @@ int step(int number)
 
 int outputVar(int number, int index, char *nameBuffer, int length, int &type)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       std::string name = work->outputVar(index, type);
-      if (name.size() > length) {
+      if (static_cast<int>(name.size()) > length) {
         return CODE_FAILED;
       }
       strcpy(nameBuffer, name.c_str());
@@ -137,11 +139,11 @@ int outputVar(int number, int index, char *nameBuffer, int length, int &type)
 
 int inputVar(int number, int index, char *nameBuffer, int length, int &type)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       std::string name = work->inputVar(index, type);
-      if (name.size() > length) {
+      if (static_cast<int>(name.size()) > length) {
         return CODE_FAILED;
       }
       strcpy(nameBuffer, name.c_str());
@@ -155,7 +157,7 @@ int inputVar(int number, int index, char *nameBuffer, int length, int &type)
 
 double getDouble(int number, const char *name)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       return work->doubleValue(name);
@@ -169,7 +171,7 @@ double getDouble(int number, const char *name)
 
 bool getBool(int number, const char *name)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       return work->boolValue(name);
@@ -183,7 +185,7 @@ bool getBool(int number, const char *name)
 
 int getInt(int number, const char *name)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       return work->intValue(name);
@@ -198,16 +200,16 @@ int getInt(int number, const char *name)
 int getString(int number, const char *name, char *buffer, int length)
 {
   int strLength = -1;
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       std::string value = work->strValue(name);
-      if (value.size() > length) {
+      if (static_cast<int>(value.size()) > length) {
         last_error = "size buffer is too small";
         return -1;
       }
       strcpy(buffer, value.c_str());
-      strLength = value.size();
+      strLength = static_cast<int>(value.size());
     } catch(...) {
       last_error = work->lastError();
     }
@@ -217,7 +219,7 @@ int getString(int number, const char *name, char *buffer, int length)
 
 void setDouble(int number, const char *name, double value)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       work->setDoubleValue(name, value);
@@ -229,7 +231,7 @@ void setDouble(int number, const char *name, double value)
 
 void setBool(int number, const char *name, bool value)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       work->setBoolValue(name, value);
@@ -241,7 +243,7 @@ void setBool(int number, const char *name, bool value)
 
 void setInt(int number, const char *name, int value)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       work->setIntValue(name, value);
@@ -253,7 +255,7 @@ void setInt(int number, const char *name, int value)
 
 void setString(int number, const char *name, char *value)
 {
-  if (number < temp_data.size() && temp_data[number] != nullptr) {
+  if (number < static_cast<int>(temp_data.size()) && temp_data[number] != nullptr) {
     fmuw::FMUWork * work = temp_data[number];
     try {
       work->setStringValue(name, std::string(value));

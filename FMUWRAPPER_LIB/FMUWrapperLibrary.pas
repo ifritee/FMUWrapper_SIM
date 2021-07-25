@@ -54,29 +54,29 @@ const
    // @brief lastError Записываает последнюю ошибку
    // @param error указатель на массив чаров для записи текста ошибки
    // @param length размер массива
-  procedure lastError(error : PAnsiChar; size : UINT32); external FMULIB_DLL;
+  procedure lastError(error : PAnsiChar; size : UINT32); cdecl; external FMULIB_DLL;
 
    // @brief parsing Запуск парсинга файла дескриптора FMU модели
    // @param number номер модели
    // @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением 
-  function parsing(number : Integer) : Integer;  external FMULIB_DLL;
+  function parsing(number : Integer) : Integer; cdecl; external FMULIB_DLL;
 
    // @brief initialize Инициализация модели FMU
    // @param number номер модели
    // @param entTime Время окончания моделирования
    // @param stepSize Размер шага
    // @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением 
-  function initialize(number : Integer; endTime : Real; stepSize : Real) : Integer;  external FMULIB_DLL;
+  function initialize(number : Integer; endTime : Real; stepSize : Real) : Integer; cdecl;  external FMULIB_DLL;
 
    // @brief outputsQty Возвращает количество выходных переменных
    // @param number номер модели
    // @return Количество выходных переменных или -1, если ошибка
-  function outputsQty(number : Integer) : Integer; external FMULIB_DLL;
+  function outputsQty(number : Integer) : Integer; cdecl; external FMULIB_DLL;
 
    // @brief inputsQty Возвращает количество входных переменных
    // @param number номер модели
    // @return Количество выходных переменных или -1, если ошибка
-  function inputsQty(number : Integer) : Integer; external FMULIB_DLL;
+  function inputsQty(number : Integer) : Integer; cdecl; external FMULIB_DLL;
 
    // @brief outputVar Устанавливает имя и тип переменной по индексу
    // @param number номер модели
@@ -85,7 +85,7 @@ const
    // @param length размер буфера
    // @param type номер типа ( в нумерации fmu sdk)
    // @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
-  function outputVar(number : Integer; index : Integer; nameBuffer : PAnsiChar; length : Integer; var ttype : Integer) : Integer; external FMULIB_DLL;
+  function outputVar(number : Integer; index : Integer; nameBuffer : PAnsiChar; length : Integer; var ttype : Integer) : Integer; cdecl; external FMULIB_DLL;
 
    // @brief inputVar Устанавливает имя и тип переменной по индексу
    // @param number номер модели
@@ -94,30 +94,30 @@ const
    // @param length размер буфера
    // @param type номер типа ( в нумерации fmu sdk)
    // @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением */
-  function inputVar(number : Integer; index : Integer; nameBuffer : PAnsiChar; length : Integer; var ttype : Integer) : Integer; external FMULIB_DLL;
+  function inputVar(number : Integer; index : Integer; nameBuffer : PAnsiChar; length : Integer; var ttype : Integer) : Integer; cdecl; external FMULIB_DLL;
 
    // @brief step Шаг расчета модели
    // @param number номер модели
    // @return 0 - успех, -1 - неудача, 1 - успех, но с предупреждением 
-  function step(number : Integer) : Integer; external FMULIB_DLL; 
+  function step(number : Integer) : Integer; cdecl; external FMULIB_DLL;
 
    // @brief getDouble Возвращает значение типа DOUBLE по имени
    // @param number номер модели
    // @param name Имя переменной
    // @return значение переменной 
-  function getDouble(number : Integer; name : PAnsiChar) : Real; external FMULIB_DLL;
+  function getDouble(number : Integer; name : PAnsiChar) : Real; cdecl; external FMULIB_DLL;
 
    // @brief getBool Возвращает значение типа Bool по имени
    // @param number номер модели
    // @param name Имя переменной
    // @return значение переменной 
-  function getBool(number : Integer; name : PAnsiChar) : Boolean; external FMULIB_DLL;
+  function getBool(number : Integer; name : PAnsiChar) : Boolean; cdecl; external FMULIB_DLL;
 
    // @brief getBool Возвращает значение типа Int по имени
    // @param number номер модели
    // @param name Имя переменной
    // @return значение переменной
-  function getInt(number : Integer; name : PAnsiChar) : Integer; external FMULIB_DLL;
+  function getInt(number : Integer; name : PAnsiChar) : Integer; cdecl; external FMULIB_DLL;
 
    // @brief getBool Возвращает значение типа String по имени
    // @param number номер модели
@@ -125,27 +125,27 @@ const
    // @param buffer Буфер для записи строки
    // @param length Длина буфера
    // @return Размер строки
-  function getString(number : Integer; name : PAnsiChar; buffer : PAnsiChar; length : Integer) : Integer; external FMULIB_DLL;
+  function getString(number : Integer; name : PAnsiChar; buffer : PAnsiChar; length : Integer) : Integer; cdecl; external FMULIB_DLL;
    // @brief setDouble Возвращает значение типа DOUBLE по имени
    // @param number номер модели
    // @param name Имя переменной
    // @param value Значение
-  procedure setDouble(number : Integer; name : PAnsiChar; value : Real); external FMULIB_DLL;
+  procedure setDouble(number : Integer; name : PAnsiChar; value : Real); cdecl; external FMULIB_DLL;
    // @brief setBool Возвращает значение типа Bool по имени
    // @param number номер модели
    // @param name Имя переменной
    // @param value Значение
-  procedure setBool(number : Integer; name : PAnsiChar; value : Boolean); external FMULIB_DLL;
+  procedure setBool(number : Integer; name : PAnsiChar; value : Boolean); cdecl; external FMULIB_DLL;
    // @brief setBool Возвращает значение типа Int по имени
    // @param number номер модели
    // @param name Имя переменной
    // @param value Значение
-  procedure setInt(number : Integer; name : PAnsiChar; value : Integer); external FMULIB_DLL;
+  procedure setInt(number : Integer; name : PAnsiChar; value : Integer); cdecl; external FMULIB_DLL;
    // @brief setBool Возвращает значение типа String по имени
    // @param number номер модели
    // @param name Имя переменной
    // @param value строка
-  procedure setString(number : Integer; name : PAnsiChar; value : PAnsiChar); external FMULIB_DLL;
+  procedure setString(number : Integer; name : PAnsiChar; value : PAnsiChar); cdecl; external FMULIB_DLL;
   
 implementation
 
