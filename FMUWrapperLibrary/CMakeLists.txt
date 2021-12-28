@@ -5,10 +5,6 @@ project(FMUWrapperLibrary LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-SET(BOOST_REQUIRED_COMPONENTS)
 
 set(SOURCE_FILES
   src/main.cpp
@@ -82,6 +78,7 @@ include_directories(
   src/common
   third_party/libzip/lib
   third_party/libexpat
+  third_party
   )
 
 add_definitions(
@@ -104,16 +101,8 @@ target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/third_party/libexpat/n
 target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
 
 find_package(Threads REQUIRED)
-find_package(Boost 1.69 COMPONENTS program_options log log_setup REQUIRED)
 #find_package(ZLIB)
 find_package(LibXml2 REQUIRED)
 
 #target_link_libraries(${PROJECT_NAME} ZLIB::ZLIB)
 target_link_libraries(${PROJECT_NAME} ${LIBXML2_LIBRARIES})
-if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
-else()
-  message(FATAL_ERROR "!!! BOOST libraries NOT found !!!")
-endif()
-

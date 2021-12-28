@@ -90,7 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;$(ProjectDir)..\..\third_party\libzip/lib;$(ProjectDir)..\..\third_party\libzip/build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;$(ProjectDir)..\..\third_party\libzip/lib;$(ProjectDir)..\..\third_party\libzip/build;$(ProjectDir)..\..\third_party;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -113,7 +113,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;$(ProjectDir)..\..\third_party\libzip/lib;$(ProjectDir)..\..\third_party\libzip/build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;$(ProjectDir)..\..\third_party\libzip/lib;$(ProjectDir)..\..\third_party\libzip/build;$(ProjectDir)..\..\third_party;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -135,7 +135,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;$(ProjectDir)..\..\third_party\libzip/lib;$(ProjectDir)..\..\third_party\libzip/build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;$(ProjectDir)..\..\third_party\libzip/lib;$(ProjectDir)..\..\third_party\libzip/build;$(ProjectDir)..\..\third_party;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -158,7 +158,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;$(ProjectDir)..\..\third_party\libzip/lib;$(ProjectDir)..\..\third_party\libzip/build;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\src;$(ProjectDir)..\..\src\common;$(ProjectDir)..\..\src\fmi;$(ProjectDir)..\..\src\fmi\fmi10;$(ProjectDir)..\..\src\fmi\fmi10\shared;$(ProjectDir)..\..\src\fmi\fmi20;$(ProjectDir)..\..\src\fmi\fmi20\include;$(ProjectDir)..\..\src\fmi\fmi20\parser;$(ProjectDir)..\..\src\fmi\fmi20\parser\fmu20;$(ProjectDir)..\..\src\fmi\fmi20\parser\libxml;$(ProjectDir)..\..\src\fmi\fmi10\shared\include;$(ProjectDir)..\..\src\fmi\fmi10\shared\parser;$(ProjectDir)..\..\third_party\libexpat;$(ProjectDir)..\..\third_party\libzip/lib;$(ProjectDir)..\..\third_party\libzip/build;$(ProjectDir)..\..\third_party;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
